@@ -13,7 +13,7 @@ const Sidebar = () => {
           <h1 className="text-2xl font-semibold text-center py-4 uppercase mb-4">
             COMO LOGO
           </h1>
-          <Link href="/admin/dashboard" className="flex justify-start items-center gap-2 bg-blue-100 rounded-md w-full p-2">
+          <Link href="/admin/dashboard" className="flex justify-start items-center gap-2 hover:bg-gray-100 rounded-md w-full p-2">
             <MdDashboard className="text-2xl" />
             <p className="text-blue-900 tracking-wide">Dashboard</p>
           </Link>

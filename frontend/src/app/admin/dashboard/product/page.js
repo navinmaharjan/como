@@ -69,7 +69,6 @@ const products = [
   // Add more products as needed
 ];
 
-
 const AdminProduct = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   return (
@@ -82,12 +81,13 @@ const AdminProduct = () => {
           isDismissable={false}
           isKeyboardDismissDisabled={true}
           radius="none"
+          size="2xl"
         >
           <ModalContent>
             {(onClose) => (
               <>
                 <ModalHeader className="flex flex-col gap-1">
-                  Add Product
+                  Create New Product
                 </ModalHeader>
                 <ModalBody>
                   <AddProduct />
@@ -106,7 +106,7 @@ const AdminProduct = () => {
         </Modal>
       </div>
       <div className="my-2 w-full p-4 bg-white shadow-md overflow-hidden">
-        <div class="grid grid-cols-12 gap-2 bg-gray-100 p-2 border-b border-gray-200">
+        <div className="grid grid-cols-12 gap-2 bg-gray-100 p-2 border-b border-gray-200">
           <div className="text-sm font-medium text-gray-700">S.no</div>
           <div className="text-sm font-medium text-gray-700">Image</div>
           <div className="text-sm font-medium text-gray-700 col-span-2">Name</div>
@@ -123,8 +123,8 @@ const AdminProduct = () => {
               <img
                 src={product.imageURL}
                 alt={product.name}
-                width={50}
-                height={50}
+                width={80}
+                height={80}
                 className="rounded-md"
               />
             </div>
