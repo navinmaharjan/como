@@ -4,10 +4,10 @@ import { useState } from 'react'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import Label from "./UI/Label"
-import { Textarea, Input, Select, SelectItem, Checkbox } from "@nextui-org/react";
+import { Textarea, Input, Select, SelectItem, Checkbox, Button } from "@nextui-org/react";
 
 const categories = {
-  men: ['Briefcase', 'Messenger Bag', 'Backpack', 'Travel Bag'],
+  men: ['Briefcase', 'Messenger Bag', 'Backpack', 'Travel Bag', 'RuckSack'],
   women: ['Handbag', 'Clutch', 'Tote', 'Shoulder Bag'],
   kids: ['School Bag', 'Lunch Bag', 'Mini Backpack', 'Crossbody Bag']
 }
@@ -47,11 +47,10 @@ const initialValues = {
   isFeatured: false,
 }
 
-const handleSubmit = (values) => {
-  console.log(values)
-}
-
-const AdminProduct = () => {
+const AdminProduct = (props) => {
+  const handleSubmit = (values) => {
+    console.log(values)
+  }
   return (
     <div className="w-full mx-auto p-2">
       <Formik
@@ -61,8 +60,9 @@ const AdminProduct = () => {
       >
         {({ errors, touched, setFieldValue, values }) => (
           <Form className="space-y-4">
+            {/* NAME */}
             <div>
-              <Label>Product Name</Label>
+              <Label htmlFor="name">Product Name</Label>
               <Field name="name">
                 {({ field }) => (
                   <Input
@@ -76,6 +76,7 @@ const AdminProduct = () => {
               {errors.name && touched.name && <div className="text-red-500 text-sm mt-1">{errors.name}</div>}
             </div>
             
+            {/* DESCRIPTION */}
             <div>
               <Label htmlFor="description">Description</Label>
               <Field name="description">
@@ -91,6 +92,7 @@ const AdminProduct = () => {
               {errors.description && touched.description && <div className="text-red-500 text-sm mt-1">{errors.description}</div>}
             </div>
             
+            {/* PRICE */}
             <div>
               <Label htmlFor="price">Price</Label>
               <Field name="price">
@@ -114,6 +116,7 @@ const AdminProduct = () => {
               {errors.price && touched.price && <div className="text-red-500 text-sm mt-1">{errors.price}</div>}
             </div>
             
+            {/* CATEGORY */}
             <div>
               <Label htmlFor="category">Category</Label>
               <Select
@@ -121,18 +124,25 @@ const AdminProduct = () => {
                 className={errors.category && touched.category ? 'border-red-500' : ''}
                 id='category'
                 radius='none'
-                onValueChange={(value) => {
-                  setFieldValue('category', value)
-                  setFieldValue('subcategory', '')  // Reset subcategory when category changes
+                 aria-label="Category"
+                 selectedKeys={values.category ? [values.category] : []}
+                 onChange={(e) => {
+                  const value = e.target.value;
+                  setFieldValue('category', value);
+                  setFieldValue('subcategory', '');  // Reset subcategory when category changes
                 }}
                 value={values.category}
               >
-                <SelectItem value="men">Men</SelectItem>
-                <SelectItem value="women">Women</SelectItem>
-                <SelectItem value="kids">Kids</SelectItem>
+               {Object.keys(categories).map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </SelectItem>
+                ))}
               </Select>
               {errors.category && touched.category && <div className="text-red-500 text-sm mt-1">{errors.category}</div>}
             </div>
+
+            {/* SUBCATEGORY */}
             {values.category && (
               <div>
                 <Label htmlFor="subcategory">Subcategory</Label>
@@ -141,7 +151,9 @@ const AdminProduct = () => {
                   className={errors.subcategory && touched.subcategory ? 'border-red-500' : ''}
                   id='subcategory'
                   radius='none'
-                  onValueChange={(value) => setFieldValue('subcategory', value)}
+                  aria-label="Subcategory"
+                  selectedKeys={values.subcategory ? [values.subcategory] : []}
+                  onChange={(e) => setFieldValue('subcategory', e.target.value)}
                   value={values.subcategory}
                 >
                   {categories[values.category].map((subcat) => (
@@ -152,6 +164,7 @@ const AdminProduct = () => {
               </div>
             )}
 
+            {/* IMG-URL */}
             <div>
               <Label htmlFor="imageUrl">Image URL</Label>
               <Field name="imageUrl">
@@ -167,31 +180,49 @@ const AdminProduct = () => {
               {errors.imageUrl && touched.imageUrl && <div className="text-red-500 text-sm mt-1">{errors.imageUrl}</div>}
             </div>
 
+            {/* CHECKBOX */}
             <div className='flex gap-8'>
             <div className="flex items-center space-x-2">
-              <Checkbox
-                id="isBestSelling"
-                checked={values.isBestSelling}
-                onCheckedChange={(checked) => setFieldValue('isBestSelling', checked)}
-                color='default'
-                radius='none'
-                disableAnimation
-                
-              />
-              <Label htmlFor="isBestSelling">Best Selling</Label>
+            <Field name="isBestSelling">
+                  {({ field }) => (
+                    <Checkbox
+                      id="isBestSelling"
+                      isSelected={field.value}
+                      onValueChange={(isSelected) => setFieldValue('isBestSelling', isSelected)}
+                      color='default'
+                      radius='none'
+                      disableAnimation
+                    />
+                  )}
+                </Field>
+                <Label htmlFor="isBestSelling">Best Selling</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Field name="isFeatured">
+                  {({ field }) => (
+                    <Checkbox
+                      id="isFeatured"
+                      isSelected={field.value}
+                      onValueChange={(isSelected) => setFieldValue('isFeatured', isSelected)}
+                      color='default'
+                      radius='none'
+                      disableAnimation
+                    />
+                  )}
+                </Field>
+                <Label htmlFor="isFeatured">Featured</Label>
             </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="isFeatured"
-                checked={values.isFeatured}
-                onCheckedChange={(checked) => setFieldValue('isFeatured', checked)}
-                color='default'
-                radius='none'
-                disableAnimation
-              />
-              <Label htmlFor="isFeatured">Featured</Label>
             </div>
+
+            <div className='flex gap-2'>
+            <Button type='submit' className='bg-blue-800 text-white' radius='none' disableAnimation>
+              Submit
+            </Button>
+            <Button onPress={props.onClose} className='bg-gray-200' radius='none' disableAnimation>
+              Cancel
+            </Button>
             </div>
+           
           </Form>
         )}
       </Formik>
