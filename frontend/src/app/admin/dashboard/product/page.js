@@ -105,7 +105,7 @@ const AdminProduct = () => {
                     Create New Product
                   </ModalHeader>
                   <ModalBody>
-                    <AddProduct onClose={onClose} /> 
+                    <AddProduct onClose={onClose} />
                   </ModalBody>
                   {/* <ModalFooter>
                     <Button onPress={onClose} radius="none">

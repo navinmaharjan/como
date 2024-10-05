@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import Label from "./UI/Label"
 import { Textarea, Input, Select, SelectItem, Checkbox, Button } from "@nextui-org/react";
+import { toast } from "react-hot-toast";
 
 const categories = {
   men: ['Briefcase', 'Messenger Bag', 'Backpack', 'Travel Bag', 'RuckSack'],
@@ -50,6 +50,8 @@ const initialValues = {
 const AdminProduct = (props) => {
   const handleSubmit = (values) => {
     console.log(values)
+    props.onClose()
+    toast.success('Product created successfully')
   }
   return (
     <div className="w-full mx-auto p-2">
