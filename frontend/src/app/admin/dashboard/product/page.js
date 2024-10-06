@@ -8,75 +8,34 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Pagination,
+  Spinner
 } from "@nextui-org/react";
+import Image from 'next/image'
 import AddProduct from "../../components/AddProduct";
-
-const products = [
-  {
-    id: 1,
-    name: "Leather Backpack",
-    imageURL:
-      "https://prestashop.coderplace.com/PRS03/PRS03060/demo/modules/cp_categorylist/views/img/14-cp_categorylist.jpg", // Placeholder image
-    category: "Men",
-    subCategory: "Backpacks",
-    sellPrice: 99.99,
-    costPrice: 69.99,
-  },
-  {
-    id: 2,
-    name: "Stylish Tote Bag",
-    imageURL:
-      "https://prestashop.coderplace.com/PRS03/PRS03060/demo/modules/cp_categorylist/views/img/14-cp_categorylist.jpg", // Placeholder image
-    category: "Women",
-    subCategory: "Totes",
-    sellPrice: 59.99,
-    costPrice: 39.99,
-  },
-  {
-    id: 3,
-    name: "Cute Crossbody Bag",
-    imageURL:
-      "https://prestashop.coderplace.com/PRS03/PRS03060/demo/modules/cp_categorylist/views/img/14-cp_categorylist.jpg", // Placeholder image
-    category: "Kids",
-    subCategory: "Crossbody Bags",
-    sellPrice: 39.99,
-    costPrice: 24.99,
-  },
-  {
-    id: 4,
-    name: "Messenger Bag",
-    imageURL:
-      "https://prestashop.coderplace.com/PRS03/PRS03060/demo/modules/cp_categorylist/views/img/14-cp_categorylist.jpg", // Placeholder image
-    category: "Men",
-    subCategory: "Messengers",
-    sellPrice: 79.99,
-    costPrice: 54.99,
-  },
-  {
-    id: 5,
-    name: "Beach Tote Bag",
-    imageURL:
-      "https://prestashop.coderplace.com/PRS03/PRS03060/demo/modules/cp_categorylist/views/img/14-cp_categorylist.jpg", // Replace with actual image URL
-    category: "Women",
-    subCategory: "Totes",
-    sellPrice: 49.99,
-    costPrice: 34.99,
-  },
-  {
-    id: 6,
-    name: "Kids Backpack",
-    imageURL:
-      "https://prestashop.coderplace.com/PRS03/PRS03060/demo/modules/cp_categorylist/views/img/14-cp_categorylist.jpg", // Replace with actual image URL
-    category: "Kids",
-    subCategory: "Backpacks",
-    sellPrice: 29.99,
-    costPrice: 19.99,
-  },
-  // Add more products as needed
-];
+import { useState, useEffect } from "react";
 
 const AdminProduct = () => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [productList, setProductList] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+  const fetchProduct = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch (`https://67020dc0b52042b542d918c2.mockapi.io/api/v1/products`)
+      const data = await response.json()
+      setProductList(data)
+      setIsLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchProduct()
+  }, [])
+
   return (
     <div>
       {/* ADD PRODUCT MODAL & SORTING PRODUCT */}
@@ -152,19 +111,24 @@ const AdminProduct = () => {
             Action
           </div>
         </div>
-        {products.map((product, index) => (
+        {isLoading ? (
+          <div className="flex justify-center items-center h-64">
+          <Spinner size="sm" />
+        </div>
+        ): (productList.map((product, index) => (
           <div
             key={product.id}
             className="grid grid-cols-12 gap-2 p-2 border-b border-gray-200 items-center"
           >
             <div className="text-sm text-gray-600">{index + 1}</div>
-            <div>
-              <img
+            <div className="relative w-14 h-14 overflow-hidden">
+              <Image
                 src={product.imageURL}
                 alt={product.name}
                 width={80}
                 height={80}
-                className="rounded-md"
+                priority={true}
+                className="absolute w-full h-full"
               />
             </div>
             <div className="text-sm font-medium text-gray-800 col-span-2">
@@ -174,7 +138,7 @@ const AdminProduct = () => {
               {product.category}
             </div>
             <div className="text-sm text-gray-600 col-span-2">
-              {product.subCategory}
+              {product.subcategory}
             </div>
             <div className="text-sm text-gray-600">
               ${product.sellPrice.toFixed(2)}
@@ -199,7 +163,10 @@ const AdminProduct = () => {
               </Button>
             </div>
           </div>
-        ))}
+        )))}
+        <div className="w-full flex justify-center items-center mt-4">
+        <Pagination showControls total={4} initialPage={1} radius="none" size="sm" />
+        </div>
       </div>
     </div>
   );

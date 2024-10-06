@@ -13,7 +13,7 @@ const Navbar = () => {
         <div className="flex justify-center items-center gap-4">
         <FaRegBell className="text-xl" />
         <div className="relative w-8 h-8 rounded-full overflow-hidden">
-          <Image src="/images/hero_001.jpg" height={1000} width={1000} className="absolute w-full h-full object-cover" />
+          <Image src="/images/hero_001.jpg" alt="image" height={1000} width={1000} className="absolute w-full h-full object-cover" />
         </div>
         </div>
       </div>
