@@ -13,24 +13,24 @@ const Sidebar = () => {
           <h1 className="text-2xl font-semibold text-center py-4 uppercase mb-4">
             COMO LOGO
           </h1>
-          <Link href="/admin/dashboard" className="flex justify-start items-center gap-2 hover:bg-gray-100 rounded-md w-full p-2">
+          <Link href="/admin/dashboard" className="flex justify-start items-center gap-2 hover:bg-gray-100 w-full p-2">
             <MdDashboard className="text-2xl" />
             <p className="text-blue-900 tracking-wide">Dashboard</p>
           </Link>
-          <Link  href="/admin/dashboard/product" className="flex justify-start items-center gap-2 rounded-md w-full p-2 hover:bg-gray-100 cursor-pointer">
+          <Link  href="/admin/dashboard/product" className="flex justify-start items-center gap-2 w-full p-2 hover:bg-gray-100 cursor-pointer">
             <IoBagAdd className="text-2xl" />
             <p className="text-gray-600 tracking-wide">Product</p>
           </Link >
-          <Link href="/admin/dashboard/orders" className="flex justify-start items-center gap-2 rounded-md w-full p-2 hover:bg-gray-100 cursor-pointer">
+          <Link href="/admin/dashboard/orders" className="flex justify-start items-center gap-2 w-full p-2 hover:bg-gray-100 cursor-pointer">
             <FaUsersGear className="text-2xl" />
             <p className="text-gray-600 tracking-wide">Orders</p>
           </Link>
-          <Link href="/admin/dashboard/settings" className="flex justify-start items-center gap-2 rounded-md w-full p-2 hover:bg-gray-100 cursor-pointer">
+          <Link href="/admin/dashboard/settings" className="flex justify-start items-center gap-2 w-full p-2 hover:bg-gray-100 cursor-pointer">
             <IoMdSettings className="text-2xl" />
             <p className="text-gray-600 tracking-wide">Settings</p>
           </Link>
         </div>
-        <div className="w-full flex gap-2 p-2 hover:bg-gray-100 cursor-pointer rounded-md">
+        <div className="w-full flex gap-2 p-2 hover:bg-gray-100 cursor-pointer">
         <IoLogOutSharp className="text-2xl" />
         <p className="text-gray-600 tracking-wide">Logout</p>
         </div>
