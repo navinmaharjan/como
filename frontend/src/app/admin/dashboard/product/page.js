@@ -17,21 +17,34 @@ import { useState, useEffect } from "react";
 const AdminProduct = () => {
   const [productList, setProductList] = useState([]);
   const [totalItems, setTotalItems] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
   const totalPage = Math.ceil(totalItems/10)
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const fetchProduct = async () => {
+  //to handle total page of the pagination
+  const fetchTotalCount = async () => {
+    const url = new URL(`https://67020dc0b52042b542d918c2.mockapi.io/api/v1/products`);
+    try {
+      const response = await fetch(url)
+      const data = await response.json()
+      setTotalItems(data.length)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const fetchProduct = async (page=1) => {
     setIsLoading(true);
     const url = new URL(`https://67020dc0b52042b542d918c2.mockapi.io/api/v1/products`);
-    // url.searchParams.append('page', 1);
-    // url.searchParams.append('limit', 10);
+    url.searchParams.append('page', page);
+    url.searchParams.append('limit', 10);
 
     try {
       const response = await fetch(url);
       const data = await response.json();
-      setTotalItems(data.length)
       setProductList(data);
+      setCurrentPage(page);
     } catch (error) {
       console.log(error);
     } finally {
@@ -40,8 +53,13 @@ const AdminProduct = () => {
   };
 
   useEffect(() => {
+    fetchTotalCount();
     fetchProduct();
   }, []);
+
+  const handlePageChange = (page) => {
+    fetchProduct(page)
+  }
 
   return (
     <div>
@@ -105,7 +123,7 @@ const AdminProduct = () => {
               key={index}
               className="grid grid-cols-12 gap-2 p-2 border-b border-gray-200 items-center"
             >
-              <div className="text-sm text-gray-600">{index + 1}</div>
+              <div className="text-sm text-gray-600">{(currentPage - 1) * 10 + index + 1}</div>
               <div className="relative w-14 h-14 overflow-hidden">
                 <Image
                   src={product.imageURL}
@@ -135,6 +153,7 @@ const AdminProduct = () => {
             total={totalPage}
             radius="none"
             size="sm"
+            onChange={handlePageChange}
           />
         </div>
       </div>
