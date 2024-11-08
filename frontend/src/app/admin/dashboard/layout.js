@@ -5,10 +5,10 @@ export default function AdminLayout({ children }) {
   return (
     <div>
       <div className="flex">
-        <div className="w-72 h-screen">
+        <div className="w-60 fixed left-0 top-0 bg-white">
           <Sidebar />
         </div>
-        <div className='w-full bg-gray-100 px-8 border-l'>
+        <div className='w-full bg-gray-100 px-8 border-l ml-60'>
           <div className='w-full'>
               <div className='flex flex-col'>
                 <Navbar />
