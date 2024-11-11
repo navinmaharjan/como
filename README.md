@@ -20,10 +20,6 @@
 - [ ] Protect an admin route login
 - [ ] UI for both the admin and user login
 
-
-
-
-
 ## Getting Started
 
 To get started with the project, follow these steps:
