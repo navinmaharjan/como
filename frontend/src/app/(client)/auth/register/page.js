@@ -4,8 +4,10 @@ import React, { useState } from 'react'
 
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
+import axios from "axios";
 import { Input, Button, Link } from "@nextui-org/react"
-import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiPhone  } from "react-icons/fi"
+import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiPhone } from "react-icons/fi"
+import { toast } from "react-hot-toast";
 
 const RegisterSchema = Yup.object().shape({
   fullName: Yup.string()
@@ -15,7 +17,7 @@ const RegisterSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
     .required('Required'),
-  mobileNumber: Yup.string()
+  mobile: Yup.string()
     .matches(/^[0-9]{10}$/, 'Mobile number must be 10 digits')
     .required('Required'),
   password: Yup.string()
@@ -28,19 +30,27 @@ const Register = () => {
 
   const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible)
 
+  const handleSubmit = async (values) => {
+    try {
+      const { data } = await axios.post('http://localhost:8000/register', values);
+      if (data) {
+        toast.success(data.msg);
+      }
+    } catch (error) {
+      const errorMessage = error?.response?.data?.msg || "An unexpected error occurred.";
+      toast.error(errorMessage);
+      console.error("Error posting data:", error);
+    }
+  };
+
   return (
     <div className=' h-screen flex justify-center items-center bg-gray-100'>
       <div className="w-[512px] mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
         <Formik
-          initialValues={{ fullName: '', email: '', mobileNumber: '', password: '' }}
+          initialValues={{ fullName: '', email: '', mobile: '', password: '' }}
           validationSchema={RegisterSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2))
-              setSubmitting(false)
-            }, 400)
-          }}
+          onSubmit={handleSubmit}
         >
           {({ errors, touched, isSubmitting }) => (
             <Form className="flex flex-col gap-4">
@@ -69,7 +79,7 @@ const Register = () => {
                 )}
               </Field>
 
-              <Field name="mobileNumber">
+              <Field name="mobile">
                 {({ field }) => (
                   <Input
                     {...field}
@@ -82,30 +92,30 @@ const Register = () => {
               </Field>
 
               <Field name="password">
-              {({ field }) => (
-                <Input
-                  {...field}
-                  type={isPasswordVisible ? "text" : "password"}
-                  placeholder="Enter your password"
-                  startContent={<FiLock className="text-default-400 pointer-events-none flex-shrink-0" />}
-                  endContent={
-                    <button
-                      className="focus:outline-none"
-                      type="button"
-                      onClick={togglePasswordVisibility}
-                    >
-                      {isPasswordVisible ? (
-                        <FiEyeOff className="text-lg text-default-400 pointer-events-none" />
-                      ) : (
-                        <FiEye className="text-lg text-default-400 pointer-events-none" />
-                      )}
-                    </button>
-                  }
-                  isInvalid={touched.password && errors.password}
-                  errorMessage={touched.password && errors.password}
-                />
-              )}
-            </Field>
+                {({ field }) => (
+                  <Input
+                    {...field}
+                    type={isPasswordVisible ? "text" : "password"}
+                    placeholder="Enter your password"
+                    startContent={<FiLock className="text-default-400 pointer-events-none flex-shrink-0" />}
+                    endContent={
+                      <button
+                        className="focus:outline-none"
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                      >
+                        {isPasswordVisible ? (
+                          <FiEyeOff className="text-lg text-default-400 pointer-events-none" />
+                        ) : (
+                          <FiEye className="text-lg text-default-400 pointer-events-none" />
+                        )}
+                      </button>
+                    }
+                    isInvalid={touched.password && errors.password}
+                    errorMessage={touched.password && errors.password}
+                  />
+                )}
+              </Field>
 
               <Button type="submit" color="primary" isLoading={isSubmitting}>
                 Register
