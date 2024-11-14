@@ -18,7 +18,7 @@
 #### Login
 - [ ] API Endpoint for an admin and user login
 - [ ] Protect an admin route login
-- [ ] UI for both the admin and user login
+- [x] UI for both the admin and user login
 
 ## Getting Started
 

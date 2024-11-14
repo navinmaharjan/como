@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { Input, Button, Link } from "@nextui-org/react"
-import { FiUser, FiMail, FiLock, FiEye, FiEyeOff  } from "react-icons/fi"
+import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiPhone  } from "react-icons/fi"
 
 const RegisterSchema = Yup.object().shape({
   fullName: Yup.string()
@@ -14,6 +14,9 @@ const RegisterSchema = Yup.object().shape({
     .required('Required'),
   email: Yup.string()
     .email('Invalid email')
+    .required('Required'),
+  mobileNumber: Yup.string()
+    .matches(/^[0-9]{10}$/, 'Mobile number must be 10 digits')
     .required('Required'),
   password: Yup.string()
     .min(8, 'Password must be at least 8 characters')
@@ -30,7 +33,7 @@ const Register = () => {
       <div className="w-[512px] mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold mb-6 text-center">Register</h1>
         <Formik
-          initialValues={{ fullName: '', email: '', password: '' }}
+          initialValues={{ fullName: '', email: '', mobileNumber: '', password: '' }}
           validationSchema={RegisterSchema}
           onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
@@ -66,12 +69,23 @@ const Register = () => {
                 )}
               </Field>
 
+              <Field name="mobileNumber">
+                {({ field }) => (
+                  <Input
+                    {...field}
+                    placeholder="Enter your mobile number"
+                    startContent={<FiPhone className="text-default-400 pointer-events-none flex-shrink-0" />}
+                    isInvalid={touched.mobileNumber && errors.mobileNumber}
+                    errorMessage={touched.mobileNumber && errors.mobileNumber}
+                  />
+                )}
+              </Field>
+
               <Field name="password">
               {({ field }) => (
                 <Input
                   {...field}
                   type={isPasswordVisible ? "text" : "password"}
-
                   placeholder="Enter your password"
                   startContent={<FiLock className="text-default-400 pointer-events-none flex-shrink-0" />}
                   endContent={
