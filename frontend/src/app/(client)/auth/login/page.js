@@ -3,8 +3,11 @@
 import React, { useState } from 'react'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
+import axios from "axios";
+import { toast } from "react-hot-toast";
 import { Input, Button, Link } from "@nextui-org/react"
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi"
+import { useRouter } from 'next/navigation'
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -15,9 +18,22 @@ const LoginSchema = Yup.object().shape({
 })
 
 const Login = () => {
+  const router = useRouter()
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
-
   const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible)
+  const handleLogin = async (values) => {
+    try {
+      const { data } = await axios.post('http://localhost:8000/login', values);
+      if (data) {
+        toast.success(data.msg);
+        router.push("/")
+      }
+    } catch (error) {
+      const errorMessage = error?.response?.data?.msg || "An unexpected error occurred.";
+      toast.error(errorMessage);
+      console.error("Error posting data:", error);
+    }
+  }
 
   return (
     <div className=' h-screen flex justify-center items-center bg-gray-100'>
@@ -26,12 +42,7 @@ const Login = () => {
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={LoginSchema}
-        onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2))
-            setSubmitting(false)
-          }, 400)
-        }}
+        onSubmit={handleLogin}
       >
         {({ errors, touched, isSubmitting }) => (
           <Form className="flex flex-col gap-4">
