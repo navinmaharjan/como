@@ -47,7 +47,7 @@ const AdminLogin = () => {
           validationSchema={LoginSchema}
           onSubmit={handleLogin}
         >
-          {({ errors, touched, isSubmitting, status }) => (
+          {({ errors, touched, isSubmitting }) => (
             <Form className="space-y-4">
               <Field name="email">
                 {({ field }) => (
