@@ -12,6 +12,8 @@ import Image from "next/image";
 import AddProduct from "../../components/AddProductModal";
 import EditProduct from "../../components/EditProductModal";
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const AdminProduct = () => {
   const [productList, setProductList] = useState([]);
@@ -22,6 +24,15 @@ const AdminProduct = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+
+  //to handle adding product to the database
+  const handleAddProduct = async () => {
+    try {
+
+    } catch (error) {
+
+    }
+  }
 
   //to handle total page of the pagination
   const fetchTotalCount = async () => {
@@ -71,6 +82,8 @@ const AdminProduct = () => {
     setIsEditModalOpen(true);
   };
 
+
+
   return (
     <div>
       {/* ADD PRODUCT MODAL & SORTING PRODUCT */}
@@ -80,7 +93,8 @@ const AdminProduct = () => {
             onPress={() => setIsAddModalOpen(true)}
             radius="none"
             disableAnimation
-            className="bg-blue-800 text-white"
+            className="bg-blue-900 text-white"
+
           >
             Add Product
           </Button>

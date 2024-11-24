@@ -5,31 +5,35 @@ import * as Yup from 'yup'
 import Label from "./UI/Label"
 import { Textarea, Input, Select, SelectItem, Checkbox, Button } from "@nextui-org/react";
 import { toast } from "react-hot-toast";
+import axios from "axios";
 
 const categories = {
-  men: ['Briefcase', 'Messenger Bag', 'Backpack', 'Travel Bag', 'RuckSack'],
-  women: ['Handbag', 'Clutch', 'Tote', 'Shoulder Bag'],
-  kids: ['School Bag', 'Lunch Bag', 'Mini Backpack', 'Crossbody Bag']
+  Men: ['Briefcase', 'Messenger', 'Backpack', 'Travel Bag', 'RuckSack'],
+  Women: ['Handbag', 'Clutch', 'Tote', 'Shoulder Bag'],
+  Kids: ['School Bag', 'Lunch Bag', 'Mini Backpack', 'Crossbody Bag']
 }
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
+  productName: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
-  description: Yup.string()
+  productDescription: Yup.string()
     .min(10, 'Too Short!')
     .max(500, 'Too Long!')
     .required('Required'),
-  price: Yup.number()
+  productSellPrice: Yup.number()
     .positive('Must be positive')
     .required('Required'),
-  category: Yup.string()
-    .oneOf(['men', 'women', 'kids'], 'Invalid category')
+  productCostPrice: Yup.number()
+    .positive('Must be positive')
     .required('Required'),
-  subcategory: Yup.string()
+  productCategory: Yup.string()
+    .oneOf(['Men', 'Women', 'Kids'], 'Invalid category')
     .required('Required'),
-  imageUrl: Yup.string()
+  productSubcategory: Yup.string()
+    .required('Required'),
+  productImage: Yup.string()
     .url('Must be a valid URL')
     .required('Required'),
   isBestSelling: Yup.boolean(),
@@ -37,22 +41,36 @@ const validationSchema = Yup.object().shape({
 })
 
 const initialValues = {
-  name: '',
-  description: '',
-  price: '',
-  category: '',
-  subcategory: '',
-  imageUrl: '',
+  productName: '',
+  productDescription: '',
+  productSellPrice: '',
+  productCostPrice: '',
+  productCategory: '',
+  productSubcategory: '',
+  productImage: '',
   isBestSelling: false,
   isFeatured: false,
 }
 
 const AdminProduct = (props) => {
-  const handleSubmit = (values) => {
-    console.log(values)
-    props.onClose()
-    toast.success('Product created successfully')
+  const handleSubmit = async (values) => {
+    try {
+      const response = await axios.post('http://localhost:8000/addProduct', values);
+      console.log('Product creation response:', response.data);
+      toast.success('Product created successfully');
+      props.onClose();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || 'An error occurred while creating the product';
+        toast.error(errorMessage);
+        console.error('Error creating product:', error.response?.data);
+      } else {
+        toast.error('An unexpected error occurred');
+        console.error('Unexpected error:', error);
+      }
+    }
   }
+
   return (
     <div className="w-full mx-auto p-2">
       <Formik
@@ -64,44 +82,44 @@ const AdminProduct = (props) => {
           <Form className="space-y-4">
             {/* NAME */}
             <div>
-              <Label htmlFor="name">Product Name</Label>
-              <Field name="name">
+              <Label htmlFor="productName">Product Name</Label>
+              <Field name="productName">
                 {({ field }) => (
                   <Input
                     {...field}
-                    id="name"
+                    id="productName"
                     radius='none'
-                    className={errors.name && touched.name ? 'border-red-500' : ''}
+                    className={errors.productName && touched.productName ? 'border-red-500' : ''}
                   />
                 )}
               </Field>
-              {errors.name && touched.name && <div className="text-red-500 text-sm mt-1">{errors.name}</div>}
+              {errors.productName && touched.productName && <div className="text-red-500 text-sm mt-1">{errors.productName}</div>}
             </div>
-            
+
             {/* DESCRIPTION */}
             <div>
-              <Label htmlFor="description">Description</Label>
-              <Field name="description">
+              <Label htmlFor="productDescription">Description</Label>
+              <Field name="productDescription">
                 {({ field }) => (
                   <Textarea
                     {...field}
-                    id="description"
+                    id="productDescription"
                     radius='none'
-                    className={errors.description && touched.description ? 'border-red-500' : ''}
+                    className={errors.productDescription && touched.productDescription ? 'border-red-500' : ''}
                   />
                 )}
               </Field>
-              {errors.description && touched.description && <div className="text-red-500 text-sm mt-1">{errors.description}</div>}
+              {errors.productDescription && touched.productDescription && <div className="text-red-500 text-sm mt-1">{errors.description}</div>}
             </div>
-            
-            {/* PRICE */}
+
+            {/* SELL PRICE */}
             <div>
-              <Label htmlFor="price">Price</Label>
-              <Field name="price">
+              <Label htmlFor="productSellPrice">Selling Price</Label>
+              <Field name="productSellPrice">
                 {({ field }) => (
                   <Input
                     {...field}
-                    id="price"
+                    id="productSellPrice"
                     type='number'
                     placeholder='0.00'
                     labelPlacement="outside"
@@ -111,81 +129,105 @@ const AdminProduct = (props) => {
                       </div>
                     }
                     radius='none'
-                    className={errors.price && touched.price ? 'border-red-500' : ''}
+                    className={errors.productSellPrice && touched.productSellPrice ? 'border-red-500' : ''}
                   />
                 )}
               </Field>
-              {errors.price && touched.price && <div className="text-red-500 text-sm mt-1">{errors.price}</div>}
+              {errors.productSellPrice && touched.productSellPrice && <div className="text-red-500 text-sm mt-1">{errors.productSellPrice}</div>}
             </div>
-            
+
+            {/* COST PRICE */}
+            <div>
+              <Label htmlFor="productCostPrice">Cost Price</Label>
+              <Field name="productCostPrice">
+                {({ field }) => (
+                  <Input
+                    {...field}
+                    id="productCostPrice"
+                    type='number'
+                    placeholder='0.00'
+                    labelPlacement="outside"
+                    endContent={
+                      <div className="pointer-events-none flex items-center">
+                        <span className="text-default-400 text-small">$</span>
+                      </div>
+                    }
+                    radius='none'
+                    className={errors.productCostPrice && touched.productCostPrice ? 'border-red-500' : ''}
+                  />
+                )}
+              </Field>
+              {errors.productCostPrice && touched.productCostPrice && <div className="text-red-500 text-sm mt-1">{errors.productCostPrice}</div>}
+            </div>
+
             {/* CATEGORY */}
             <div>
-              <Label htmlFor="category">Category</Label>
+              <Label htmlFor="productCategory">Category</Label>
               <Select
                 placeholder="Select Category"
-                className={errors.category && touched.category ? 'border-red-500' : ''}
-                id='category'
+                className={errors.productCategory && touched.productCategory ? 'border-red-500' : ''}
+                id='productCategory'
                 radius='none'
-                 aria-label="Category"
-                 selectedKeys={values.category ? [values.category] : []}
-                 onChange={(e) => {
+                aria-label="Category"
+                selectedKeys={values.productCategory ? [values.productCategory] : []}
+                onChange={(e) => {
                   const value = e.target.value;
-                  setFieldValue('category', value);
+                  setFieldValue('productCategory', value);
                   setFieldValue('subcategory', '');  // Reset subcategory when category changes
                 }}
-                value={values.category}
+                value={values.productCategory}
               >
-               {Object.keys(categories).map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                {Object.keys(categories).map((productCategory) => (
+                  <SelectItem key={productCategory} value={productCategory}>
+                    {productCategory.charAt(0).toUpperCase() + productCategory.slice(1)}
                   </SelectItem>
                 ))}
               </Select>
-              {errors.category && touched.category && <div className="text-red-500 text-sm mt-1">{errors.category}</div>}
+              {errors.productCategory && touched.productCategory && <div className="text-red-500 text-sm mt-1">{errors.productCategory}</div>}
             </div>
 
             {/* SUBCATEGORY */}
-            {values.category && (
+            {values.productCategory && (
               <div>
-                <Label htmlFor="subcategory">Subcategory</Label>
+                <Label htmlFor="productSubcategory">Subcategory</Label>
                 <Select
                   placeholder="Select Subcategory"
-                  className={errors.subcategory && touched.subcategory ? 'border-red-500' : ''}
-                  id='subcategory'
+                  className={errors.productSubcategory && touched.productSubcategory ? 'border-red-500' : ''}
+                  id='productSubcategory'
                   radius='none'
-                  aria-label="Subcategory"
-                  selectedKeys={values.subcategory ? [values.subcategory] : []}
-                  onChange={(e) => setFieldValue('subcategory', e.target.value)}
-                  value={values.subcategory}
+                  aria-label="productSubcategory"
+                  selectedKeys={values.productSubcategory ? [values.productSubcategory] : []}
+                  onChange={(e) => setFieldValue('productSubcategory', e.target.value)}
+                  value={values.productSubcategory}
                 >
-                  {categories[values.category].map((subcat) => (
-                    <SelectItem key={subcat} value={subcat}>{subcat}</SelectItem>
+                  {categories[values.productCategory].map((productSubcategory) => (
+                    <SelectItem key={productSubcategory} value={productSubcategory}>{productSubcategory}</SelectItem>
                   ))}
                 </Select>
-                {errors.subcategory && touched.subcategory && <div className="text-red-500 text-sm mt-1">{errors.subcategory}</div>}
+                {errors.productSubcategory && touched.productSubcategory && <div className="text-red-500 text-sm mt-1">{errors.productSubcategory}</div>}
               </div>
             )}
 
             {/* IMG-URL */}
             <div>
-              <Label htmlFor="imageUrl">Image URL</Label>
-              <Field name="imageUrl">
+              <Label htmlFor="productImage">Product Image URL</Label>
+              <Field name="productImage">
                 {({ field }) => (
                   <Input
                     {...field}
-                    id="imageUrl"
+                    id="productImage"
                     radius='none'
-                    className={errors.imageUrl && touched.imageUrl ? 'border-red-500' : ''}
+                    className={errors.productImage && touched.productImage ? 'border-red-500' : ''}
                   />
                 )}
               </Field>
-              {errors.imageUrl && touched.imageUrl && <div className="text-red-500 text-sm mt-1">{errors.imageUrl}</div>}
+              {errors.productImage && touched.productImage && <div className="text-red-500 text-sm mt-1">{errors.productImage}</div>}
             </div>
 
             {/* CHECKBOX */}
             <div className='flex gap-8'>
-            <div className="flex items-center space-x-2">
-            <Field name="isBestSelling">
+              <div className="flex items-center space-x-2">
+                <Field name="isBestSelling">
                   {({ field }) => (
                     <Checkbox
                       id="isBestSelling"
@@ -213,18 +255,18 @@ const AdminProduct = (props) => {
                   )}
                 </Field>
                 <Label htmlFor="isFeatured">Featured</Label>
-            </div>
+              </div>
             </div>
 
             <div className='flex gap-2'>
-            <Button type='submit' className='bg-blue-800 text-white' radius='none' disableAnimation>
-              Submit
-            </Button>
-            <Button onPress={props.onClose} className='bg-gray-200' radius='none' disableAnimation>
-              Cancel
-            </Button>
+              <Button type='submit' className='bg-blue-800 text-white' radius='none' disableAnimation>
+                Submit
+              </Button>
+              <Button onPress={props.onClose} className='bg-gray-200' radius='none' disableAnimation>
+                Cancel
+              </Button>
             </div>
-           
+
           </Form>
         )}
       </Formik>
