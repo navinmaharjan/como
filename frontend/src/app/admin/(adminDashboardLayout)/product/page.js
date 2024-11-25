@@ -17,72 +17,43 @@ import { toast } from "react-hot-toast";
 
 const AdminProduct = () => {
   const [productList, setProductList] = useState([]);
-  const [totalItems, setTotalItems] = useState(1);
-  const totalPage = Math.ceil(totalItems / 10);
+  const [totalPage, setTotalPage] = useState(1)
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
-  //to handle adding product to the database
-  const handleAddProduct = async () => {
-    try {
-
-    } catch (error) {
-
-    }
-  }
-
-  //to handle total page of the pagination
-  const fetchTotalCount = async () => {
-    const url = new URL(
-      `https://67020dc0b52042b542d918c2.mockapi.io/api/v1/products`
-    );
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      setTotalItems(data.length);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchProduct = async (page = 1) => {
+  const fetchProducts = async (page = 1, limit = 8) => {
     setIsLoading(true);
-    const url = new URL(
-      `https://67020dc0b52042b542d918c2.mockapi.io/api/v1/products`
-    );
-    url.searchParams.append("page", page);
-    url.searchParams.append("limit", 10);
-
     try {
-      const response = await fetch(url);
-      const data = await response.json();
-      setProductList(data);
+      const response = await fetch(`http://localhost:8000/products?page=${page}&limit=${limit}`)
+      console.log(response)
+      const result = await response.json()
+      setProductList(result.data);
+      setTotalPage(Math.ceil(result.totalCount / limit));
       setCurrentPage(page);
+
     } catch (error) {
-      console.log(error);
+      console.error('Error fetching products:', error);
+      toast.error('Failed to fetch products');
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchTotalCount();
-    fetchProduct();
+    fetchProducts();
   }, []);
 
   const handlePageChange = (page) => {
-    fetchProduct(page);
-  };
+    fetchProducts(page)
+  }
 
   const handleEdit = (product) => {
     setEditingProduct(product);
     setIsEditModalOpen(true);
   };
-
-
 
   return (
     <div>
@@ -141,10 +112,10 @@ const AdminProduct = () => {
         <div className="grid grid-cols-12 gap-2 bg-gray-100 p-2 border-b border-gray-200">
           <div className="text-sm font-medium text-gray-700">S.no</div>
           <div className="text-sm font-medium text-gray-700">Image</div>
-          <div className="text-sm font-medium text-gray-700 col-span-2">
+          <div className="text-sm font-medium text-gray-700 col-span-3">
             Name
           </div>
-          <div className="text-sm font-medium text-gray-700 col-span-2">
+          <div className="text-sm font-medium text-gray-700 col-span-1">
             Category
           </div>
           <div className="text-sm font-medium text-gray-700 col-span-2">
@@ -167,32 +138,32 @@ const AdminProduct = () => {
               className="grid grid-cols-12 gap-2 p-2 border-b border-gray-200 items-center"
             >
               <div className="text-sm text-gray-600">
-                {(currentPage - 1) * 10 + index + 1}
+                {(currentPage - 1) * 8 + index + 1}
               </div>
               <div className="relative w-14 h-14 overflow-hidden">
                 <Image
-                  src={product.imageURL}
-                  alt={product.name}
+                  src={product.productImage}
+                  alt={product.productName}
                   width={80}
                   height={80}
                   priority={true}
                   className="absolute w-full h-full object-cover"
                 />
               </div>
-              <div className="text-sm font-medium text-gray-800 col-span-2">
-                {product.name}
+              <div className="text-sm font-medium text-gray-800 col-span-3">
+                {product.productName}
+              </div>
+              <div className="text-sm text-gray-600 col-span-1">
+                {product.productCategory}
               </div>
               <div className="text-sm text-gray-600 col-span-2">
-                {product.category}
-              </div>
-              <div className="text-sm text-gray-600 col-span-2">
-                {product.subcategory}
+                {product.productSubcategory}
               </div>
               <div className="text-sm text-gray-600">
-                ${product.sellPrice.toFixed(2)}
+                ${product.productSellPrice.toFixed(2)}
               </div>
               <div className="text-sm text-gray-600">
-                ${product.costPrice.toFixed(2)}
+                ${product.productCostPrice.toFixed(2)}
               </div>
               <div className="flex space-x-2">
                 <Button

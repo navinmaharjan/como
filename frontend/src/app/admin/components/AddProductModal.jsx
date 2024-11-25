@@ -109,7 +109,7 @@ const AdminProduct = (props) => {
                   />
                 )}
               </Field>
-              {errors.productDescription && touched.productDescription && <div className="text-red-500 text-sm mt-1">{errors.description}</div>}
+              {errors.productDescription && touched.productDescription && <div className="text-red-500 text-sm mt-1">{errors.productDescription}</div>}
             </div>
 
             {/* SELL PRICE */}
