@@ -28,7 +28,6 @@ const AdminProduct = () => {
     setIsLoading(true);
     try {
       const response = await fetch(`http://localhost:8000/products?page=${page}&limit=${limit}`)
-      console.log(response)
       const result = await response.json()
       setProductList(result.data);
       setTotalPage(Math.ceil(result.totalCount / limit));

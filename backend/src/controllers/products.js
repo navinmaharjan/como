@@ -25,5 +25,25 @@ const getAllProducts = async (req, res) => {
     }
 };
 
+const updateProduct = async (req, res) => {
+    try {
+        const newProductData = req.body;
+        const updatedProduct = await Product.findByIdAndUpdate(
+            req.params.productId,
+            newProductData,
+            { new: true, runValidators: true }
+        );
 
-module.exports = { addNewProduct, getAllProducts }
+        if (!updatedProduct) {
+            return res.status(404).json({ msg: "Product not found" });
+        }
+
+        res.status(200).json({ updatedProduct, msg: "Product updated successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Server error" });
+    }
+}
+
+
+module.exports = { addNewProduct, getAllProducts, updateProduct }
