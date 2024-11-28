@@ -6,6 +6,7 @@ import Label from "./UI/Label"
 import { Textarea, Input, Select, SelectItem, Checkbox, Button } from "@nextui-org/react";
 import { toast } from "react-hot-toast";
 import axios from 'axios'
+import { useMemo } from 'react'
 
 const categories = {
   Men: ['Briefcase', 'Messenger', 'Backpack', 'Travel Bag', 'RuckSack'],
@@ -70,197 +71,205 @@ const EditProductModal = (props) => {
         initialValues={initialValues}
         validationSchema={validationSchema}
       >
-        {({ errors, touched, setFieldValue, values }) => (
-          <Form className="space-y-4">
-            {/* NAME */}
-            <div>
-              <Label htmlFor="productName">Product Name</Label>
-              <Field name="productName">
-                {({ field }) => (
-                  <Input
-                    {...field}
-                    id="productName"
-                    radius='none'
-                    className={errors.productName && touched.productName ? 'border-red-500' : ''}
-                  />
-                )}
-              </Field>
-              {errors.productName && touched.productName && <div className="text-red-500 text-sm mt-1">{errors.productName}</div>}
-            </div>
+        {({ errors, touched, setFieldValue, values}) => {
+           const isFormChanged = useMemo(() => {
+            return Object.keys(initialValues).some(key => initialValues[key] !== values[key]);
+          }, [values]);
+          return (
+            
+            <Form className="space-y-4">
 
-            {/* DESCRIPTION */}
-            <div>
-              <Label htmlFor="productDescription">Description</Label>
-              <Field name="productDescription">
-                {({ field }) => (
-                  <Textarea
-                    {...field}
-                    id="productDescription"
-                    radius='none'
-                    className={errors.productDescription && touched.productDescription ? 'border-red-500' : ''}
-                  />
-                )}
-              </Field>
-              {errors.productDescription && touched.productDescription && <div className="text-red-500 text-sm mt-1">{errors.productDescription}</div>}
-            </div>
-
-            {/* SELLING PRICE */}
-            <div>
-              <Label htmlFor="productSellPrice">Selling Price</Label>
-              <Field name="productSellPrice">
-                {({ field }) => (
-                  <Input
-                    {...field}
-                    id="productSellPrice"
-                    type='number'
-                    placeholder='0.00'
-                    labelPlacement="outside"
-                    endContent={
-                      <div className="pointer-events-none flex items-center">
-                        <span className="text-default-400 text-small">$</span>
-                      </div>
-                    }
-                    radius='none'
-                    className={errors.productSellPrice && touched.productSellPrice ? 'border-red-500' : ''}
-                  />
-                )}
-              </Field>
-              {errors.productSellPrice && touched.productSellPrice && <div className="text-red-500 text-sm mt-1">{errors.productSellPrice}</div>}
-            </div>
-
-            {/* COST PRICE */}
-            <div>
-              <Label htmlFor="productCostPrice">Cost Price</Label>
-              <Field name="productCostPrice">
-                {({ field }) => (
-                  <Input
-                    {...field}
-                    id="productCostPrice"
-                    type='number'
-                    placeholder='0.00'
-                    labelPlacement="outside"
-                    endContent={
-                      <div className="pointer-events-none flex items-center">
-                        <span className="text-default-400 text-small">$</span>
-                      </div>
-                    }
-                    radius='none'
-                    className={errors.productCostPrice && touched.productCostPrice ? 'border-red-500' : ''}
-                  />
-                )}
-              </Field>
-              {errors.productCostPrice && touched.productCostPrice && <div className="text-red-500 text-sm mt-1">{errors.productCostPrice}</div>}
-            </div>
-
-            {/* CATEGORY */}
-            <div>
-              <Label htmlFor="productCategory">Category</Label>
-              <Select
-                placeholder="Select Category"
-                className={errors.productCategory && touched.productCategory ? 'border-red-500' : ''}
-                id='productCategory'
-                radius='none'
-                aria-label="Category"
-                selectedKeys={[values.productCategory]}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setFieldValue('productCategory', value);
-                  setFieldValue('productSubcategory', '');
-                }}
-                value={values.productCategory}
-              >
-                {Object.keys(categories).map((productCategory) => (
-                  <SelectItem key={productCategory} value={productCategory}>
-                    {productCategory.charAt(0).toUpperCase() + productCategory.slice(1)}
-                  </SelectItem>
-                ))}
-              </Select>
-              {errors.productCategory && touched.productCategory && <div className="text-red-500 text-sm mt-1">{errors.productCategory}</div>}
-            </div>
-
-            {/* SUBCATEGORY */}
-            {values.productCategory && (
+              {/* NAME */}
               <div>
-                <Label htmlFor="subcategory">Subcategory</Label>
+                <Label htmlFor="productName">Product Name</Label>
+                <Field name="productName">
+                  {({ field }) => (
+                    <Input
+                      {...field}
+                      id="productName"
+                      radius='none'
+                      className={errors.productName && touched.productName ? 'border-red-500' : ''}
+                    />
+                  )}
+                </Field>
+                {errors.productName && touched.productName && <div className="text-red-500 text-sm mt-1">{errors.productName}</div>}
+              </div>
+
+              {/* DESCRIPTION */}
+              <div>
+                <Label htmlFor="productDescription">Description</Label>
+                <Field name="productDescription">
+                  {({ field }) => (
+                    <Textarea
+                      {...field}
+                      id="productDescription"
+                      radius='none'
+                      className={errors.productDescription && touched.productDescription ? 'border-red-500' : ''}
+                    />
+                  )}
+                </Field>
+                {errors.productDescription && touched.productDescription && <div className="text-red-500 text-sm mt-1">{errors.productDescription}</div>}
+              </div>
+
+              {/* SELLING PRICE */}
+              <div>
+                <Label htmlFor="productSellPrice">Selling Price</Label>
+                <Field name="productSellPrice">
+                  {({ field }) => (
+                    <Input
+                      {...field}
+                      id="productSellPrice"
+                      type='number'
+                      placeholder='0.00'
+                      labelPlacement="outside"
+                      endContent={
+                        <div className="pointer-events-none flex items-center">
+                          <span className="text-default-400 text-small">$</span>
+                        </div>
+                      }
+                      radius='none'
+                      className={errors.productSellPrice && touched.productSellPrice ? 'border-red-500' : ''}
+                    />
+                  )}
+                </Field>
+                {errors.productSellPrice && touched.productSellPrice && <div className="text-red-500 text-sm mt-1">{errors.productSellPrice}</div>}
+              </div>
+
+              {/* COST PRICE */}
+              <div>
+                <Label htmlFor="productCostPrice">Cost Price</Label>
+                <Field name="productCostPrice">
+                  {({ field }) => (
+                    <Input
+                      {...field}
+                      id="productCostPrice"
+                      type='number'
+                      placeholder='0.00'
+                      labelPlacement="outside"
+                      endContent={
+                        <div className="pointer-events-none flex items-center">
+                          <span className="text-default-400 text-small">$</span>
+                        </div>
+                      }
+                      radius='none'
+                      className={errors.productCostPrice && touched.productCostPrice ? 'border-red-500' : ''}
+                    />
+                  )}
+                </Field>
+                {errors.productCostPrice && touched.productCostPrice && <div className="text-red-500 text-sm mt-1">{errors.productCostPrice}</div>}
+              </div>
+
+              {/* CATEGORY */}
+              <div>
+                <Label htmlFor="productCategory">Category</Label>
                 <Select
-                  placeholder="Select Subcategory"
-                  className={errors.productSubcategory && touched.productSubcategory ? 'border-red-500' : ''}
-                  id='productSubcategory'
+                  placeholder="Select Category"
+                  className={errors.productCategory && touched.productCategory ? 'border-red-500' : ''}
+                  id='productCategory'
                   radius='none'
-                  aria-label="Subcategory"
-                  selectedKeys={[values.productSubcategory]}
-                  onChange={(e) => setFieldValue('productSubcategory', e.target.value)}
-                  value={values.productSubcategory}
+                  aria-label="Category"
+                  selectedKeys={[values.productCategory]}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFieldValue('productCategory', value);
+                    setFieldValue('productSubcategory', '');
+                  }}
+                  value={values.productCategory}
                 >
-                  {categories[values.productCategory].map((productSubcategory) => (
-                    <SelectItem key={productSubcategory} value={productSubcategory}>{productSubcategory}</SelectItem>
+                  {Object.keys(categories).map((productCategory) => (
+                    <SelectItem key={productCategory} value={productCategory}>
+                      {productCategory.charAt(0).toUpperCase() + productCategory.slice(1)}
+                    </SelectItem>
                   ))}
                 </Select>
-                {errors.productSubcategory && touched.productSubcategory && <div className="text-red-500 text-sm mt-1">{errors.productSubcategory}</div>}
+                {errors.productCategory && touched.productCategory && <div className="text-red-500 text-sm mt-1">{errors.productCategory}</div>}
               </div>
-            )}
 
-            {/* IMG-URL */}
-            <div>
-              <Label htmlFor="productImage">Image URL</Label>
-              <Field name="productImage">
-                {({ field }) => (
-                  <Input
-                    {...field}
-                    id="productImage"
+              {/* SUBCATEGORY */}
+              {values.productCategory && (
+                <div>
+                  <Label htmlFor="subcategory">Subcategory</Label>
+                  <Select
+                    placeholder="Select Subcategory"
+                    className={errors.productSubcategory && touched.productSubcategory ? 'border-red-500' : ''}
+                    id='productSubcategory'
                     radius='none'
-                    className={errors.productImage && touched.productImage ? 'border-red-500' : ''}
-                  />
-                )}
-              </Field>
-              {errors.productImage && touched.productImage && <div className="text-red-500 text-sm mt-1">{errors.productImage}</div>}
-            </div>
+                    aria-label="Subcategory"
+                    selectedKeys={[values.productSubcategory]}
+                    onChange={(e) => setFieldValue('productSubcategory', e.target.value)}
+                    value={values.productSubcategory}
+                  >
+                    {categories[values.productCategory].map((productSubcategory) => (
+                      <SelectItem key={productSubcategory} value={productSubcategory}>{productSubcategory}</SelectItem>
+                    ))}
+                  </Select>
+                  {errors.productSubcategory && touched.productSubcategory && <div className="text-red-500 text-sm mt-1">{errors.productSubcategory}</div>}
+                </div>
+              )}
 
-            {/* CHECKBOX */}
-            <div className='flex gap-8'>
-              <div className="flex items-center space-x-2">
-                <Field name="isBestSelling">
+              {/* IMG-URL */}
+              <div>
+                <Label htmlFor="productImage">Image URL</Label>
+                <Field name="productImage">
                   {({ field }) => (
-                    <Checkbox
-                      id="isBestSelling"
-                      isSelected={field.value}
-                      onValueChange={(isSelected) => setFieldValue('isBestSelling', isSelected)}
-                      color='default'
+                    <Input
+                      {...field}
+                      id="productImage"
                       radius='none'
-                      disableAnimation
+                      className={errors.productImage && touched.productImage ? 'border-red-500' : ''}
                     />
                   )}
                 </Field>
-                <Label htmlFor="isBestSelling">Best Selling</Label>
+                {errors.productImage && touched.productImage && <div className="text-red-500 text-sm mt-1">{errors.productImage}</div>}
               </div>
-              <div className="flex items-center space-x-2">
-                <Field name="isFeatured">
-                  {({ field }) => (
-                    <Checkbox
-                      id="isFeatured"
-                      isSelected={field.value}
-                      onValueChange={(isSelected) => setFieldValue('isFeatured', isSelected)}
-                      color='default'
-                      radius='none'
-                      disableAnimation
-                    />
-                  )}
-                </Field>
-                <Label htmlFor="isFeatured">Featured</Label>
+
+              {/* CHECKBOX */}
+              <div className='flex gap-8'>
+                <div className="flex items-center space-x-2">
+                  <Field name="isBestSelling">
+                    {({ field }) => (
+                      <Checkbox
+                        id="isBestSelling"
+                        isSelected={field.value}
+                        onValueChange={(isSelected) => setFieldValue('isBestSelling', isSelected)}
+                        color='default'
+                        radius='none'
+                        disableAnimation
+                      />
+                    )}
+                  </Field>
+                  <Label htmlFor="isBestSelling">Best Selling</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Field name="isFeatured">
+                    {({ field }) => (
+                      <Checkbox
+                        id="isFeatured"
+                        isSelected={field.value}
+                        onValueChange={(isSelected) => setFieldValue('isFeatured', isSelected)}
+                        color='default'
+                        radius='none'
+                        disableAnimation
+                      />
+                    )}
+                  </Field>
+                  <Label htmlFor="isFeatured">Featured</Label>
+                </div>
               </div>
-            </div>
 
-            <div className='flex gap-2'>
-              <Button onPress={() => handleUpdate(values)} className='bg-blue-800 text-white' radius='none' disableAnimation>
-                Update
-              </Button>
-              <Button onPress={props.onClose} className='bg-gray-200' radius='none' disableAnimation>
-                Cancel
-              </Button>
-            </div>
+              <div className='flex gap-2'>
+                <Button onPress={() => handleUpdate(values)} className='bg-blue-800 text-white' radius='none'   isDisabled={!isFormChanged} disableAnimation>
+                  Update
+                </Button>
+                <Button onPress={props.onClose} className='bg-gray-200' radius='none' disableAnimation>
+                  Cancel
+                </Button>
+              </div>
 
-          </Form>
-        )}
+            </Form>
+          )
+
+        }}
       </Formik>
     </div>
   )
