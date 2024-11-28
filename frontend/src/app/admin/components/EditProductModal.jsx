@@ -5,6 +5,7 @@ import * as Yup from 'yup'
 import Label from "./UI/Label"
 import { Textarea, Input, Select, SelectItem, Checkbox, Button } from "@nextui-org/react";
 import { toast } from "react-hot-toast";
+import axios from 'axios'
 
 const categories = {
   Men: ['Briefcase', 'Messenger', 'Backpack', 'Travel Bag', 'RuckSack'],
@@ -13,23 +14,26 @@ const categories = {
 }
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
+  productName: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
-  description: Yup.string()
+  productDescription: Yup.string()
     .min(10, 'Too Short!')
     .max(500, 'Too Long!')
     .required('Required'),
-  price: Yup.number()
+  productSellPrice: Yup.number()
     .positive('Must be positive')
     .required('Required'),
-  category: Yup.string()
+  productCostPrice: Yup.number()
+    .positive('Must be positive')
+    .required('Required'),
+  productCategory: Yup.string()
     .oneOf(['men', 'women', 'kids'], 'Invalid category')
     .required('Required'),
-  subcategory: Yup.string()
+  productSubcategory: Yup.string()
     .required('Required'),
-  imageUrl: Yup.string()
+  productImage: Yup.string()
     .url('Must be a valid URL')
     .required('Required'),
   isBestSelling: Yup.boolean(),
@@ -48,9 +52,16 @@ const EditProductModal = (props) => {
     isBestSelling: props.product.isBestSelling || false,
     isFeatured: props.product.isFeatured || false,
   }
-  
-  const handleUpdate  = (values) => {
-    console.log(values)
+
+
+  const handleUpdate = async (values) => {
+    try {
+      await axios.patch(`http://localhost:8000/products/${props.product._id}`, values)
+      toast.success('Product updated successfully')
+      props.onClose()
+    } catch (error) {
+      toast.error('Failed to update product')
+    }
   }
 
   return (
@@ -154,7 +165,7 @@ const EditProductModal = (props) => {
                 onChange={(e) => {
                   const value = e.target.value;
                   setFieldValue('productCategory', value);
-                  setFieldValue('subCategory', '');
+                  setFieldValue('productSubcategory', '');
                 }}
                 value={values.productCategory}
               >
@@ -240,7 +251,7 @@ const EditProductModal = (props) => {
             </div>
 
             <div className='flex gap-2'>
-              <Button  onPress={() => handleUpdate(values)} className='bg-blue-800 text-white' radius='none' disableAnimation>
+              <Button onPress={() => handleUpdate(values)} className='bg-blue-800 text-white' radius='none' disableAnimation>
                 Update
               </Button>
               <Button onPress={props.onClose} className='bg-gray-200' radius='none' disableAnimation>

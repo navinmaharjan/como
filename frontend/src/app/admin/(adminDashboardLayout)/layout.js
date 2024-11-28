@@ -5,7 +5,7 @@ export default function AdminLayout({ children }) {
   return (
     <div>
       <div className="flex">
-        <div className="w-60 fixed left-0 top-0 bg-white">
+        <div className="w-60 fixed left-0 top-0">
           <Sidebar />
         </div>
         <div className='w-full bg-gray-100 px-8 border-l ml-60'>

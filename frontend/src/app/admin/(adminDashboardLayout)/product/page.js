@@ -24,6 +24,7 @@ const AdminProduct = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
+
   const fetchProducts = async (page = 1, limit = 8) => {
     setIsLoading(true);
     try {
