@@ -11,9 +11,11 @@ import {
 import Image from "next/image";
 import AddProduct from "../../components/AddProductModal";
 import EditProduct from "../../components/EditProductModal";
+import DeleteProduct from "../../components/DeleteProductModal";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+
 
 const AdminProduct = () => {
   const [productList, setProductList] = useState([]);
@@ -22,7 +24,9 @@ const AdminProduct = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [deletingProduct, setDeletingProduct] = useState(null);
 
 
   const fetchProducts = async (page = 1, limit = 8) => {
@@ -53,6 +57,11 @@ const AdminProduct = () => {
   const handleEdit = (product) => {
     setEditingProduct(product);
     setIsEditModalOpen(true);
+  };
+
+  const deleteProduct = (product) => {
+    setDeletingProduct(product);
+    setIsDeleteModalOpen(true);
   };
 
   return (
@@ -99,6 +108,26 @@ const AdminProduct = () => {
                 <EditProduct
                   product={editingProduct}
                   onClose={() => setIsEditModalOpen(false)}
+                />
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+
+              {/* Modal for Deleting product */}
+              <Modal
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
+            isDismissable={false}
+            isKeyboardDismissDisabled={true}
+            hideCloseButton={true}
+            radius="sm"
+            size="lg"
+          >
+            <ModalContent>
+              <ModalBody>
+                <DeleteProduct
+                  product={deletingProduct}
+                  onClose={() => setIsDeleteModalOpen(false)}
                 />
               </ModalBody>
             </ModalContent>
@@ -176,6 +205,7 @@ const AdminProduct = () => {
                 </Button>
 
                 <Button
+                  onPress={() => deleteProduct(product)}
                   radius="none"
                   disableAnimation
                   className="bg-red-500 text-white"
