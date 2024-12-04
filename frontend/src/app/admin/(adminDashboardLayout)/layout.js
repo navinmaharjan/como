@@ -8,7 +8,7 @@ export default function AdminLayout({ children }) {
         <div className="w-60 fixed left-0 top-0">
           <Sidebar />
         </div>
-        <div className='w-full bg-gray-100 px-8 border-l ml-60'>
+        <div className='w-full bg-gray-100 px-8 border-l ml-60 h-screen'>
           <div className='w-full'>
               <div className='flex flex-col'>
                 <Navbar />

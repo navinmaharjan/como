@@ -7,7 +7,9 @@ import {
   Button,
   Pagination,
   Spinner,
+  PopoverContent,
 } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/react";
 import Image from "next/image";
 import AddProduct from "../../components/AddProductModal";
 import EditProduct from "../../components/EditProductModal";
@@ -27,17 +29,22 @@ const AdminProduct = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [deletingProduct, setDeletingProduct] = useState(null);
-
+  const [categoryFilter, setCategoryFilter] = useState('');
 
   const fetchProducts = async (page = 1, limit = 8) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:8000/products?page=${page}&limit=${limit}`)
-      const result = await response.json()
+      const response = await axios.get(`http://localhost:8000/products`, {
+        params: {
+          page: page,
+          limit: limit,
+          ...(categoryFilter && { category: categoryFilter })
+        }
+      });
+      const result = response.data;
       setProductList(result.data);
       setTotalPage(Math.ceil(result.totalCount / limit));
       setCurrentPage(page);
-
     } catch (error) {
       console.error('Error fetching products:', error);
       toast.error('Failed to fetch products');
@@ -46,13 +53,18 @@ const AdminProduct = () => {
     }
   };
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const handleCategoryChange = (category) => {
+    setCategoryFilter(category)
+  };
 
   const handlePageChange = (page) => {
-    fetchProducts(page)
-  }
+    fetchProducts(page, 8);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [categoryFilter]);
+
 
   const handleEdit = (product) => {
     setEditingProduct(product);
@@ -64,16 +76,21 @@ const AdminProduct = () => {
     setIsDeleteModalOpen(true);
   };
 
+  const customStyle = {
+    base: "bg-default-500 border border-gray-300",
+  };
+
   return (
     <div>
       {/* ADD PRODUCT MODAL & SORTING PRODUCT */}
-      <div className="my-2 w-full flex justify-between items-center">
+      <div className="my-2 flex justify-between items-center">
+
         <div>
           <Button
             onPress={() => setIsAddModalOpen(true)}
             radius="none"
             disableAnimation
-            className="bg-blue-900 text-white"
+            className="bg-blue-200 text-blue-900 font-semibold"
 
           >
             Add Product
@@ -113,8 +130,8 @@ const AdminProduct = () => {
             </ModalContent>
           </Modal>
 
-              {/* Modal for Deleting product */}
-              <Modal
+          {/* Modal for Deleting product */}
+          <Modal
             isOpen={isDeleteModalOpen}
             onClose={() => setIsDeleteModalOpen(false)}
             isDismissable={false}
@@ -133,7 +150,28 @@ const AdminProduct = () => {
             </ModalContent>
           </Modal>
         </div>
-        <div>Sort Product Option</div>
+
+        <div className="flex w-[295px] items-center gap-2">
+          <div>
+            <p className=" text-sm">Sort Product By:</p>
+          </div>
+          <Select
+            className="max-w-[180px]"
+            aria-label="Select"
+            radius="none"
+            placeholder="Select"
+            classNames={{
+              base: customStyle.base,
+            }}
+            value={categoryFilter}
+            onChange={(e) => handleCategoryChange(e.target.value)}
+          >
+            <SelectItem key="Men" value="Men">Men Category</SelectItem>
+            <SelectItem key="Women" value="Women">Women Category</SelectItem>
+            <SelectItem key="Kids" value="Kids">Kids Category</SelectItem>
+          </Select>
+
+        </div>
       </div>
 
       {/* PRODUCT LIST DISPLAY */}
@@ -199,7 +237,7 @@ const AdminProduct = () => {
                   onPress={() => handleEdit(product)}
                   radius="none"
                   disableAnimation
-                  className="bg-blue-800 text-white"
+                  className="bg-blue-200 text-blue-900 font-semibold"
                 >
                   Edit
                 </Button>
@@ -208,7 +246,7 @@ const AdminProduct = () => {
                   onPress={() => deleteProduct(product)}
                   radius="none"
                   disableAnimation
-                  className="bg-red-500 text-white"
+                  className="bg-red-200 text-red-900 font-semibold"
                 >
                   Delete
                 </Button>
@@ -221,7 +259,7 @@ const AdminProduct = () => {
             showControls
             loop
             total={totalPage}
-            radius="none"
+            radius="full"
             size="sm"
             onChange={handlePageChange}
           />

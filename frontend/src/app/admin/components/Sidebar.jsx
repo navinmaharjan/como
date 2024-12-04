@@ -15,7 +15,7 @@ const Sidebar = () => {
           </h1>
           <Link href="/admin/dashboard" className="flex justify-start items-center gap-2 hover:bg-gray-100 w-full p-2">
             <MdDashboard className="text-2xl" />
-            <p className="text-gray-600 tracking-wide">Dashboard</p>
+            <p className="text-gray-600 tracking-wide">Overview</p>
           </Link>
           <Link  href="/admin/product" className="flex justify-start items-center gap-2 w-full p-2 hover:bg-gray-100 cursor-pointer">
             <IoBagAdd className="text-2xl" />

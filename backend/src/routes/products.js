@@ -6,5 +6,6 @@ router.post('/addProduct', addNewProduct)
 router.get('/products', getAllProducts)
 router.patch('/products/:productId', updateProduct)
 router.delete('/products/:productId', deleteProduct)
+router.get('/products')
 
 module.exports = router

@@ -21,8 +21,9 @@ Online Store for Bags build with MERN Stack
 #### Admin Panel 
 - [x] Basic UI for admin panel (Dashboard, Products, Orders, Settings)
 - [x] Adding, editing and deleting product
+- [x] Pagination for displaying products
 - [ ] Searching product
-- [ ] Sorting product based on name, category, subcategory, price, new product likewise ......
+- [x] Sorting product based on category, need to add more sorting option later on....
 - [ ] Orders
 - [ ] Settings
 - [ ] Dashboard
