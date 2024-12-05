@@ -24,9 +24,10 @@ Online Store for Bags build with MERN Stack
 - [x] Pagination for displaying products
 - [ ] Searching product
 - [x] Sorting product based on category, need to add more sorting option later on....
+- [x] Basic Dashboard UI 
 - [ ] Orders
 - [ ] Settings
-- [ ] Dashboard
+
 
 
 
