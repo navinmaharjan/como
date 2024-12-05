@@ -22,7 +22,7 @@ const AdminLogin = () => {
 
   const handleLogin = async (values) => {
     try {
-      const { data } = await axios.post('http://localhost:8000/admin/login', values);
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}` + '/admin/login', values);
       console.log(data)
       if (data) {
         toast.success(data.msg);

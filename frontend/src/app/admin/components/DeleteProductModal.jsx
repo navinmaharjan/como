@@ -9,7 +9,7 @@ const DeleteProductModal = (props) => {
     const handleDelete = async () => {
         console.log(props)
         try {
-            await axios.delete(`http://localhost:8000/products/${props.product._id}`);
+            await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}` + '/products/' + `${props.product._id}`);
             toast.success('Product deleted successfully');
             props.onClose();
         } catch (error) {

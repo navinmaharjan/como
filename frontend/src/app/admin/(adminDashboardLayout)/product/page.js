@@ -34,7 +34,7 @@ const AdminProduct = () => {
   const fetchProducts = async (page = 1, limit = 8) => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8000/products`, {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
         params: {
           page: page,
           limit: limit,

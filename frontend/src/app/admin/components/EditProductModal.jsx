@@ -57,7 +57,7 @@ const EditProductModal = (props) => {
 
   const handleUpdate = async (values) => {
     try {
-      await axios.patch(`http://localhost:8000/products/${props.product._id}`, values)
+      await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}` + '/products/' + `${props.product._id}`, values)
       toast.success('Product updated successfully')
       props.onClose()
     } catch (error) {

@@ -8,6 +8,7 @@ import CategoryPieChart from '../../components/CategoryPieChart';
 import RecentOrders from '../../components/RecentOrders';
 
 const AdminDashboard = () => {
+  
   return (
     <div>
       <div className='flex justify-center gap-4 my-4'>

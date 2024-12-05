@@ -55,7 +55,7 @@ const initialValues = {
 const AdminProduct = (props) => {
   const handleSubmit = async (values) => {
     try {
-      const response = await axios.post('http://localhost:8000/addProduct', values);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}` + '/addProduct', values);
       console.log('Product creation response:', response.data);
       toast.success('Product created successfully');
       props.onClose();
