@@ -32,7 +32,7 @@ const Register = () => {
 
   const handleSubmit = async (values) => {
     try {
-      const { data } = await axios.post('`${process.env.NEXT_PUBLIC_API_URL}`/register', values);
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}`+'/register', values);
       if (data) {
         toast.success(data.msg);
       }

@@ -23,7 +23,7 @@ const Login = () => {
   const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible)
   const handleLogin = async (values) => {
     try {
-      const { data } = await axios.post('`${process.env.NEXT_PUBLIC_API_URL}`/login', values);
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}`+'/login', values);
       if (data) {
         toast.success(data.msg);
         router.push("/")
