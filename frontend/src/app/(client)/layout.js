@@ -5,7 +5,7 @@ import Footer from './components/Footer'
 const ClientLayout = ({children}) => {
   return (
     <div>
-      {/* <Header /> */}
+      <Header />
       {children}
       {/* <Footer /> */}
     </div>

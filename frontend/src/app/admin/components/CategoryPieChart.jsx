@@ -5,9 +5,9 @@ import { Pie, PieChart } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, } from "@/components/ui/chart"
 
 const chartData = [
-  { browser: "Men", visitors: 275, fill: "#FECACA" },
-  { browser: "Women", visitors: 200, fill: "#DBEAFE" },
-  { browser: "Kids", visitors: 187, fill: "#BBF7D0" },
+  { browser: "Men", visitors: 275, fill: "#074799" },
+  { browser: "Women", visitors: 200, fill: "#009990" },
+  { browser: "Kids", visitors: 187, fill: "#E1FFBB" },
 ]
 
 const chartConfig = {

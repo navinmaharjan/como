@@ -90,9 +90,9 @@ const AdminLogin = () => {
 
               <Button
                 type="submit"
-                color="primary"
+                
                 isLoading={isSubmitting}
-                className="w-full"
+                className="w-full bg-primaryColor text-white"
               >
                 {isSubmitting ? "Logging in..." : "Log in"}
               </Button>

@@ -90,7 +90,7 @@ const AdminProduct = () => {
             onPress={() => setIsAddModalOpen(true)}
             radius="none"
             disableAnimation
-            className="bg-blue-200 text-blue-900 font-semibold"
+            className="bg-adminPrimaryColor text-white font-semibold"
 
           >
             Add Product

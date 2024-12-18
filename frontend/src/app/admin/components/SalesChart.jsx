@@ -23,7 +23,7 @@ const chartData = [
 const chartConfig = {
   sales: {
     label: "Sales",
-    color: "#C8E0FD",
+    color: "#074799",
   }
 }
 

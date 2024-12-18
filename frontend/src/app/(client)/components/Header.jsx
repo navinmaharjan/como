@@ -1,14 +1,26 @@
 import React from 'react'
-import { Input } from "@nextui-org/input";
-import { FaHeart } from "react-icons/fa6";
-import { FaCartShopping } from "react-icons/fa6";
-
+import Menu from './Menu';
+import Search from './Search';
+import Navicons from './Navicons';
+import NavMenu from './NavMenu';
+import Link from 'next/link';
 
 const Header = () => {
   return (
-    <div>
-      <div className='flex justify-center py-4 bg-gray-200'>
-        <p>COMO LOGO</p>
+    <div className='h-14 container mx-auto'>
+      <div className='w-full h-full flex items-center justify-between'>
+        <div className=' flex items-center gap-8'>
+          <Link href="/" className='text-xl tracking-wide'>COMO</Link>
+          <div className='hidden md:flex'>
+            <NavMenu />
+          </div>
+        </div>
+        {/* For Mobile Screens */}
+        <Menu />
+        <div className='hidden md:flex items-center gap-4'>
+          <Search />
+          <Navicons />
+        </div>
       </div>
     </div>
   )

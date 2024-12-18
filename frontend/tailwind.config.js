@@ -10,8 +10,24 @@ module.exports = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+	container: {
+		padding: {
+			DEFAULT: '1rem',
+			sm: '1rem',
+			// md: '1rem',
+			// lg: '1rem',
+			// xl: '1rem',
+		},
+		center: true,
+	  },
   	extend: {
   		colors: {
+			primaryColor: "#DD761C",
+			secondaryColor: "#FEFCF5",
+			paragraphColor: "#ABAEB0",
+			blackColor: "#121713",
+
+			adminPrimaryColor: "#884A39",
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -64,3 +80,13 @@ module.exports = {
 
   plugins: [nextui(), require("tailwindcss-animate")],
 };
+
+
+// primaryColor= #F2AB37
+//secondaryColor= #FEFCF5
+//paragraphColor= #ABAEB0
+//blackColor = #121713
+
+//admin Colors
+//adminPrimaryColor = #884A39
+

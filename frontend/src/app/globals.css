@@ -82,3 +82,8 @@
     --chart-5: 340 75% 55%;
   }
 }
+
+.swiper {
+  width: 100%;
+  height: 250px;
+}
