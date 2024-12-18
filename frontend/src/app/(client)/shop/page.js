@@ -1,8 +1,15 @@
 import React from 'react'
+import Category from '../components/Category'
 
 const Shop = () => {
   return (
-    <div>Shop</div>
+    <div>
+      <div className='container mx-auto'>
+        <Category />
+      </div>
+    </div>
+
+
   )
 }
 

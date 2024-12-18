@@ -1,7 +1,6 @@
-'use client'
-
 import Image from 'next/image'
 import ButtonComponent from './UI/ButtonComponent'
+import Link from 'next/link'
 
 const Banner = () => {
     return (
@@ -13,7 +12,7 @@ const Banner = () => {
                     </h1>
                     <p className='w-[40%] sm:w-[35%] md:w-[30%] xl:w-[20%]  text-xs sm:text-sm'>Explore our diverse collection of bags designed for every member of your family.</p>
                     <div className='flex gap-2 mt-2'>
-                        <ButtonComponent>Shop Now</ButtonComponent>
+                        <ButtonComponent> <Link href={`/shop`}>Shop Now</Link></ButtonComponent>
                         {/* <ButtonComponent>Learn More</ButtonComponent> */}
                     </div>
 

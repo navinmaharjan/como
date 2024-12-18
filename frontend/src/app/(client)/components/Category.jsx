@@ -27,10 +27,12 @@ const Category = async () => {
                     </div>
                 </div>
                 <div className=" w-full py-8 grid grid-cols-2 sm:grid-cols-5 justify-center items-center gap-4">
-                        {uniqueCategories.slice(0,5).map((item, index) => (
-                            <div  key={index} className="overflow-hidden">
+                    {uniqueCategories.slice(0, 5).map((item, index) => {
+                        const formattedsubCategory = item.productSubcategory.replace(/ /g, '-');
+                        return (
+                            <div key={index} className="overflow-hidden">
                                 <Link
-                                   href={`/shop?category=${item.productCategory}&subcategory=${item.productSubcategory}`}
+                                    href={`/shop/${item.productCategory}/${formattedsubCategory}`}
                                     className="w-[240px] h-[200px] flex justify-center items-center overflow-hidden relative">
                                     <Image
                                         src={item.productImage}
@@ -45,9 +47,10 @@ const Category = async () => {
                                     {item.productSubcategory}
                                 </p>
                             </div>
+                        )
 
-                        ))}
-                    </div>
+                    })}
+                </div>
             </div>
         </div>
     );
