@@ -14,19 +14,32 @@ const addNewProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
-        const { page, limit, category } = req.query
-        let query = {}
+        const { page, limit, category, sortBy } = req.query;
+
+        let query = {};
         if (category) {
             if (!['Men', 'Women', 'Kids'].includes(category)) {
                 return res.status(400).json({ message: 'Invalid category' });
             }
-            query.productCategory = category
+            query.productCategory = category;
         }
-        const totalCount = await Product.countDocuments(query)
-        const skipCount = (page - 1) * limit
-        const data = await Product.find(query).limit(limit).skip(skipCount)
-        res.json({ data, totalCount })
 
+        let sort = {};
+        if (sortBy === 'price-low-to-high') {
+            sort.productSellPrice = 1;
+        } else if (sortBy === 'price-high-to-low') {
+            sort.productSellPrice = -1;
+        } else if (sortBy === 'name-a-to-z') {
+            sort.productName = 1;
+        } else if (sortBy === 'name-z-to-a') {
+            sort.productName = -1;
+        }
+
+        const totalCount = await Product.countDocuments(query);
+        const skipCount = (page - 1) * limit;
+        const data = await Product.find(query).sort(sort).limit(limit).skip(skipCount);
+
+        res.json({ data, totalCount });
     } catch (error) {
         console.error('Error retrieving products:', error);
         res.status(500).json({ message: 'Error retrieving products', error: error.message });
