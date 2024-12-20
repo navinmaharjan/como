@@ -7,16 +7,16 @@ import React, { useEffect, useState } from 'react'
 import { IoMdStar } from "react-icons/io";
 import { IoMdHeartEmpty } from "react-icons/io";
 import ButtonComponent from './UI/ButtonComponent'
-import ShopSelect from './ShopSelect';
-import { Pagination, Spinner } from '@nextui-org/react';
-
+import { Pagination, Select, SelectItem, Spinner } from '@nextui-org/react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const AllProducts = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pageParams = parseInt(searchParams.get('page'));
   const [productList, setProductList] = useState([]);
-  const [totalPage, setTotalPage] = useState(1)
-  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState()
   const [isLoading, setIsLoading] = useState(false);
-  // const [categoryFilter, setCategoryFilter] = useState('');
 
   const fetchProducts = async (page = 1, limit = 10) => {
     setIsLoading(true);
@@ -25,13 +25,13 @@ const AllProducts = () => {
         params: {
           page: page,
           limit: limit,
+          // sortBy: sortBy,
           // ...(categoryFilter && { category: categoryFilter })
         }
       });
       const result = response.data;
       setProductList(result.data);
       setTotalPage(Math.ceil(result.totalCount / limit));
-      setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching products:', error);
       toast.error('Failed to fetch products');
@@ -40,13 +40,22 @@ const AllProducts = () => {
     }
   };
 
-   useEffect(() => {
-      fetchProducts();
-    }, []);
+  const customStyle = {
+    base: "bg-default-500 border border-gray-300",
+  };
 
-    const handlePageChange = (page) => {
-      fetchProducts(page, 10);
-    };
+  const handlePageChange = (page) => {
+    router.push(`/shop?page=${page}`)
+  }
+
+  useEffect(() => {
+    fetchProducts(pageParams)
+  }, [pageParams]);
+
+  // const handleSorting = (sort) => {
+  //   setSortingFilter(sort);
+  //   fetchProducts(currentPage, 10, sort);
+  // };
   return (
     <div className=''>
       <div className="w-full flex justify-between items-center">
@@ -59,7 +68,23 @@ const AllProducts = () => {
                   <p className=" text-sm">Sort By:</p>
                 </div>
                 <div className='w-full'>
-                  <ShopSelect />
+                  <Select
+                    aria-label="Select"
+                    radius="none"
+                    placeholder="Relevance"
+                    classNames={{
+                      base: customStyle.base,
+                    }}
+                    size="sm"
+                    // value={sortingFilter}
+                    // onChange={(e) => handleSorting(e.target.value)}
+                  >
+                    <SelectItem key="name-a-to-z" value="name-a-to-z">Name, A-Z</SelectItem>
+                    <SelectItem key="name-z-to-a" value="name-z-to-a">Name, Z-A</SelectItem>
+                    <SelectItem key="price-low-to-high" value="price-low-to-high">Price low to high</SelectItem>
+                    <SelectItem key="price-high-to-low" value="price-high-to-low">Price high to low</SelectItem>
+
+                  </Select>
                 </div>
               </div>
             </div>
@@ -69,55 +94,57 @@ const AllProducts = () => {
       </div>
       <div className='h-[1px] bg-gray-300 w-full my-4'></div>
       <div className=" w-full grid grid-cols-2 sm:grid-cols-5 justify-center items-center gap-4">
-      {isLoading ? (
+        {isLoading ? (
           <div className="flex justify-center items-center h-[730px]">
             <Spinner size="sm" />
           </div>
         ) : (
-        productList.map((item) => {
-          const formattedProductName = item.productName.replace(/ /g, '-');
-          const formattedsubCategory = item.productSubcategory.replace(/ /g, '-');
-          return (
-            <div key={item.id} className='cursor-pointer border'>
-              <Link href={`/shop/${item.productCategory}/${formattedsubCategory}/${formattedProductName}`}>
-                <div className='w-[185px] h-[150px] flex justify-center items-center overflow-hidden relative'>
-                  <Image
-                    src={item.productImage}
-                    alt={`Image of ${item.productName}`}
-                    width={2000}
-                    height={2000}
-                    className='absolute w-full h-full object-cover'
-                    priority={true}
-                  />
-                  <IoMdHeartEmpty className='absolute top-2 left-2 text-primaryColor' />
-                </div>
-                <div className='p-2'>
-                  <p className='text-sm font-medium h-10'>{item.productName}</p>
-                  <p className='text-xs font-normal text-gray-400'>{item.productSubcategory}</p>
-                  <div className='flex gap-1 text-primaryColor'>
-                    <IoMdStar /><IoMdStar /><IoMdStar /><IoMdStar /><IoMdStar />
+          productList.map((item, index) => {
+            const formattedProductName = item.productName.replace(/ /g, '-');
+            const formattedsubCategory = item.productSubcategory.replace(/ /g, '-');
+            return (
+              <div key={index} className='cursor-pointer border'>
+                <Link  href={`/shop/${item.productCategory}/${formattedsubCategory}/${formattedProductName}`}>
+                  <div  className='w-[185px] h-[150px] flex justify-center items-center overflow-hidden relative'>
+                    <Image
+                      src={item.productImage}
+                      alt={`Image of ${item.productName}`}
+                      width={2000}
+                      height={2000}
+                      className='absolute w-full h-full object-cover'
+                      priority={true}
+                    />
+                    <IoMdHeartEmpty className='absolute top-2 left-2 text-primaryColor' />
                   </div>
-                  <p className='font-medium text-gray-800'>${item.productSellPrice}</p>
-                  <ButtonComponent>Add To Cart</ButtonComponent>
-                </div>
-              </Link>
-            </div>
-          )
-        })
-      )}
+                  <div className='p-2'>
+                    <p className='text-sm font-medium h-10'>{item.productName}</p>
+                    <p className='text-xs font-normal text-gray-400'>{item.productSubcategory}</p>
+                    <div className='flex gap-1 text-primaryColor'>
+                      <IoMdStar /><IoMdStar /><IoMdStar /><IoMdStar /><IoMdStar />
+                    </div>
+                    <p className='font-medium text-gray-800'>${item.productSellPrice}</p>
+                    <ButtonComponent>Add To Cart</ButtonComponent>
+                  </div>
+                </Link>
+              </div>
+            )
+          })
+        )}
       </div>
       <div className="w-full flex justify-center items-center mt-4">
-        <Pagination
+      <Pagination
           showControls
           loop
-          total={totalPage}
+          total={2}
           radius="full"
           size="sm"
+          initialPage={pageParams}
           onChange={handlePageChange}
           classNames={{
-            cursor:"bg-orange-700",
+            cursor: "bg-orange-700",
           }}
         />
+       
       </div>
     </div>
   )

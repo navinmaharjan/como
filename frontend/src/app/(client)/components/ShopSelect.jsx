@@ -23,8 +23,9 @@ const ShopSelect = () => {
                 <SelectItem key="NameZ-A" value="NameZ-A">Name, Z-A</SelectItem>
                 <SelectItem key="PriceLow-High" value="PriceLow-High">Price, Low-High</SelectItem>
                 <SelectItem key="PriceHigh-Low" value="PriceHigh-Low">Price, High-Low</SelectItem>
-               
-            </Select></div>
+
+            </Select>
+        </div>
     )
 }
 
