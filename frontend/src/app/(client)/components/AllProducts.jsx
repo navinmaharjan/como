@@ -44,18 +44,20 @@ const AllProducts = () => {
     base: "bg-default-500 border border-gray-300",
   };
 
-  const handlePageChange = (page) => {
-    router.push(`/shop?page=${page}`)
-  }
-
   useEffect(() => {
     fetchProducts(pageParams)
   }, [pageParams]);
+
+  const handlePageChange = (page) => {
+    router.push(`/shop?page=${page}`)
+  
+  }
 
   // const handleSorting = (sort) => {
   //   setSortingFilter(sort);
   //   fetchProducts(currentPage, 10, sort);
   // };
+
   return (
     <div className=''>
       <div className="w-full flex justify-between items-center">
@@ -132,13 +134,15 @@ const AllProducts = () => {
         )}
       </div>
       <div className="w-full flex justify-center items-center mt-4">
+        
       <Pagination
           showControls
           loop
-          total={2}
+          total={totalPage}
           radius="full"
           size="sm"
-          initialPage={pageParams}
+          // initialPage={pageParams}
+          // page={pageParams}
           onChange={handlePageChange}
           classNames={{
             cursor: "bg-orange-700",

@@ -1,3 +1,5 @@
+'use client'
+
 import axios from 'axios'
 import Image from 'next/image';
 import { IoMdStar } from "react-icons/io";
@@ -19,6 +21,7 @@ const Featured = async () => {
                         <p className='text-lg sm:text-xl font-semibold'>Featured Products</p>
                         <div className='w-[90px] h-[2px] bg-primaryColor'></div>
                     </div>
+                    <button>Increment</button>
                 </div>
                 <div className=' w-full py-8 grid grid-cols-5 justify-between items-center gap-4'>
                     {featuredProduct.map((item) => {
