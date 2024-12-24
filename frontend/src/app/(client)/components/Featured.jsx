@@ -1,5 +1,3 @@
-'use client'
-
 import axios from 'axios'
 import Image from 'next/image';
 import { IoMdStar } from "react-icons/io";
