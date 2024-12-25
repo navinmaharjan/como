@@ -19,15 +19,15 @@ export default function RootLayout({ children }) {
           </Providers>
         </ReduxProvider>
         <Toaster
-          position="top-right"
+          position="bottom-right"
           gutter={12}
           containerStyle={{ margin: "8px" }}
           toastOptions={{
             success: {
-              duration: 2500,
+              duration: 1500,
             },
             error: {
-              duration: 4000,
+              duration: 2500,
             },
             style: {
               fontSize: "16px",

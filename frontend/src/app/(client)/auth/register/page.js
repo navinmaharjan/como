@@ -13,16 +13,16 @@ const RegisterSchema = Yup.object().shape({
   fullName: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
-    .required('Required'),
+    .required('Full Name is required'),
   email: Yup.string()
     .email('Invalid email')
-    .required('Required'),
+    .required('Email is required'),
   mobile: Yup.string()
     .matches(/^[0-9]{10}$/, 'Mobile number must be 10 digits')
-    .required('Required'),
+    .required('Mobile number is required'),
   password: Yup.string()
     .min(8, 'Password must be at least 8 characters')
-    .required('Required'),
+    .required('Password is required'),
 })
 
 const Register = () => {
@@ -117,7 +117,7 @@ const Register = () => {
                 )}
               </Field>
 
-              <Button type="submit" color="primary" isLoading={isSubmitting}>
+              <Button type="submit" className='bg-primaryColor text-white' isLoading={isSubmitting}>
                 Register
               </Button>
             </Form>

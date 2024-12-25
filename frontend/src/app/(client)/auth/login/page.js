@@ -8,23 +8,29 @@ import { toast } from "react-hot-toast";
 import { Input, Button, Link } from "@nextui-org/react"
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi"
 import { useRouter } from 'next/navigation'
+import { useSelector, useDispatch } from "react-redux";
+import { setUserDetails } from '@/lib/redux/slices/userSlice';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
-    .required('Required'),
+    .required('Email is required'),
   password: Yup.string()
-    .required('Required'),
+    .required('Password is required'),
 })
 
 const Login = () => {
   const router = useRouter()
+  const dispatch = useDispatch();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible)
+  
+
   const handleLogin = async (values) => {
     try {
       const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}`+'/login', values);
       if (data) {
+        dispatch(setUserDetails(data));
         toast.success(data.msg);
         router.push("/")
       }
@@ -36,8 +42,8 @@ const Login = () => {
   }
 
   return (
-    <div className=' h-screen flex justify-center items-center bg-gray-100'>
-      <div className="w-[448px] mx-auto mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+    <div className='h-screen flex justify-center items-center bg-gray-100'>
+      <div className="w-[448px] mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
         <Formik
           initialValues={{ email: '', password: '' }}
@@ -85,7 +91,7 @@ const Login = () => {
                 )}
               </Field>
 
-              <Button type="submit" color="primary" isLoading={isSubmitting}>
+              <Button type="submit" className='bg-primaryColor text-white' isLoading={isSubmitting}>
                 Login
               </Button>
             </Form>

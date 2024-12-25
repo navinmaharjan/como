@@ -16,9 +16,13 @@ const Header = () => {
           </div>
         </div>
         {/* For Mobile Screens */}
-        <Menu />
-        <div className='hidden md:flex items-center gap-4'>
+        <div>
+          <Menu />
+        </div>
+        <div className='flex-1 px-20'>
           <Search />
+        </div>
+        <div className='hidden md:flex items-center gap-4'>
           <Navicons />
         </div>
       </div>
