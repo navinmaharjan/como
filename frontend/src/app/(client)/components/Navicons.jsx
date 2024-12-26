@@ -13,6 +13,7 @@ import Cart from "./Cart";
 const Navicons = () => {
   const dispatch = useDispatch();
   const { cartList } = useSelector((state) => state.cart);
+  const { totalItems } = useSelector((state) => state.cart);
   const { userDetails, isLoggedIn } = useSelector((state) => state.user);
   const [profileMenu, setProfileMenu] = useState(false)
   const [cartMenu, setCartMenu] = useState(false)
@@ -63,18 +64,19 @@ const Navicons = () => {
           </Link>
         </div>
       )}
-      <div className="relative w-8 h-8 flex justify-center items-center bg-primaryColor rounded-full  cursor-pointer">
+      <div onClick={() => toggleMenu('cart')} className="relative w-8 h-8 flex justify-center items-center bg-primaryColor rounded-full  cursor-pointer">
         {cartList.length > 0 && (
-          <Badge content={cartList.length} size="sm" color="danger" className="absolulte -top-3 left-1"></Badge>
+          <Badge content={totalItems} size="sm" color="danger" className="absolulte -top-3 left-1"></Badge>
         )}
-        <FaCartShopping className=" text-white" onClick={() => toggleMenu('cart')} />
-        {cartMenu && (
-          <div className={`fixed w-[350px] h-screen transition-all duration-300  bg-white top-0 drop-shadow-xl z-50 ${!cartMenu ? `-left-[350px]` : `left-0`
-            }`}>
-            {/* <Cart /> */}
-          </div>
-        )}
+        <FaCartShopping className=" text-white" />
+
       </div>
+      {cartMenu && (
+        <div className={`fixed w-[380px] h-screen transition-all duration-300  bg-white top-0 drop-shadow-xl z-50 ${!cartMenu ? `-right-[350px]` : `right-0`
+          }`}>
+          <Cart toggleMenu={toggleMenu} />
+        </div>
+      )}
     </div>
   )
 }

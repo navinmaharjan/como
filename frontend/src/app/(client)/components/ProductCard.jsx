@@ -7,12 +7,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "@/lib/redux/slices/cartSlice";
 import { useRouter } from "next/navigation";
 import { Button } from '@nextui-org/react';
+import { toast } from "react-hot-toast";
 
 const ProductCard = ({ item }) => {
     const router = useRouter();
     const dispatch = useDispatch();
     const formattedProductName = item.productName.replace(/ /g, '-');
     const formattedsubCategory = item.productSubcategory.replace(/ /g, '-');
+
+    const handleProductAddToCart = (item) => {
+        dispatch(addToCart(item))
+        toast.success(`${item.productName} added to cart`)
+    }
     return (
         <div key={item._id} className='cursor-pointer border'>
             <div onClick={() => router.push(`/shop/${item.productCategory}/${formattedsubCategory}/${formattedProductName}`)}>
@@ -34,7 +40,7 @@ const ProductCard = ({ item }) => {
                         <IoMdStar /><IoMdStar /><IoMdStar /><IoMdStar /><IoMdStar />
                     </div>
                     <p className='text-base font-medium text-gray-800'>${item.productSellPrice}</p>
-                    <Button radius='none' size='sm' disableAnimation={true} className='bg-primaryColor text-white' onClick={() => dispatch(addToCart(item))}>Add To Cart</Button>
+                    <Button radius='none' size='sm' disableAnimation={true} className='bg-primaryColor text-white' onClick={() => handleProductAddToCart(item)}>Add To Cart</Button>
                 </div>
             </div>
         </div>

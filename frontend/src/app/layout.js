@@ -30,9 +30,9 @@ export default function RootLayout({ children }) {
               duration: 2500,
             },
             style: {
-              fontSize: "16px",
+              fontSize: "14px",
               maxWidth: "500px",
-              padding: "16px 24px",
+              padding: "10px 20px",
             },
           }}
         />
