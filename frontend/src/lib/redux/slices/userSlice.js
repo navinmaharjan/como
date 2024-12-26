@@ -14,12 +14,12 @@ const userSlice = createSlice({
             return {
                 ...state,
                 userDetails: action.payload.user,
-                isLoggedIn: true, // Explicitly set isLoggedIn to true
+                isLoggedIn: true, 
                 token: action.payload.token
             };
         },
         handleLogOut: () => {
-            return initialState; // Reset to initial state on logout
+            return initialState; 
         }
     }
 });

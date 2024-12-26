@@ -1,9 +1,5 @@
 import axios from 'axios'
-import Image from 'next/image';
-import { IoMdStar } from "react-icons/io";
-import ButtonComponent from './UI/ButtonComponent'
-import { IoMdHeartEmpty } from "react-icons/io";
-import Link from 'next/link';
+import ProductCard from './ProductCard';
 
 const Featured = async () => {
     //fetch all product list
@@ -19,37 +15,11 @@ const Featured = async () => {
                         <p className='text-lg sm:text-xl font-semibold'>Featured Products</p>
                         <div className='w-[90px] h-[2px] bg-primaryColor'></div>
                     </div>
-                    <button>Increment</button>
                 </div>
                 <div className=' w-full py-8 grid grid-cols-5 justify-between items-center gap-4'>
                     {featuredProduct.map((item) => {
-                        const formattedProductName = item.productName.replace(/ /g, '-');
-                        const formattedsubCategory = item.productSubcategory.replace(/ /g, '-');
                         return (
-                            <div key={item._id} className='cursor-pointer border'>
-                                <Link href={`/shop/${item.productCategory}/${formattedsubCategory}/${formattedProductName}`}>
-                                    <div className='w-[235px] h-48 flex justify-center items-center overflow-hidden relative'>
-                                        <Image
-                                            src={item.productImage}
-                                            alt={`Image of ${item.productName}`}
-                                            width={2000}
-                                            height={2000}
-                                            className='absolute w-full h-full object-cover'
-                                            priority={true}
-                                        />
-                                        <IoMdHeartEmpty className='absolute top-2 left-2 text-primaryColor' />
-                                    </div>
-                                    <div className='p-2 border-t'>
-                                        <p className='text-base font-medium'>{item.productName}</p>
-                                        <p className='text-xs font-normal text-gray-400'>{item.productSubcategory}</p>
-                                        <div className='flex gap-1 text-primaryColor'>
-                                            <IoMdStar /><IoMdStar /><IoMdStar /><IoMdStar /><IoMdStar />
-                                        </div>
-                                        <p className='text-base font-medium text-gray-800'>${item.productSellPrice}</p>
-                                        <ButtonComponent>Add To Cart</ButtonComponent>
-                                    </div>
-                                </Link>
-                            </div>
+                           <ProductCard item = {item} />
                         )
                     })}
                 </div>
@@ -75,5 +45,37 @@ export default Featured
 
 
 // onClick={() => router.push(`/shop?category=${item.productCategory}&subcategory=${item.productSubcategory}&product=${item.productName}`)}
+
+
+// ---------------------Product Card
+{/* <div key={item._id} className='cursor-pointer border'>
+<Link href={`/shop/${item.productCategory}/${formattedsubCategory}/${formattedProductName}`}>
+    <div className='w-[235px] h-48 flex justify-center items-center overflow-hidden relative'>
+        <Image
+            src={item.productImage}
+            alt={`Image of ${item.productName}`}
+            width={2000}
+            height={2000}
+            className='absolute w-full h-full object-cover'
+            priority={true}
+        />
+        <IoMdHeartEmpty className='absolute top-2 left-2 text-primaryColor' />
+    </div>
+    <div className='p-2 border-t'>
+        <p className='text-base font-medium'>{item.productName}</p>
+        <p className='text-xs font-normal text-gray-400'>{item.productSubcategory}</p>
+        <div className='flex gap-1 text-primaryColor'>
+            <IoMdStar /><IoMdStar /><IoMdStar /><IoMdStar /><IoMdStar />
+        </div>
+        <p className='text-base font-medium text-gray-800'>${item.productSellPrice}</p>
+        <div onClick={(e) => {
+                e.stopPropagation();
+                
+            }}>
+            <ButtonComponent>Add To Cart</ButtonComponent>
+        </div>
+    </div>
+</Link>
+</div> */}
 
 
