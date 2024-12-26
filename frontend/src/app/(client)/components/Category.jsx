@@ -27,10 +27,10 @@ const Category = async () => {
                     </div>
                 </div>
                 <div className=" w-full py-8 grid grid-cols-2 sm:grid-cols-5 justify-center items-center gap-4">
-                    {uniqueCategories.slice(0, 5).map((item, index) => {
+                    {uniqueCategories.slice(0, 5).map((item) => {
                         const formattedsubCategory = item.productSubcategory.replace(/ /g, '-');
                         return (
-                            <div key={index} className="overflow-hidden">
+                            <div key={item._id} className="overflow-hidden">
                                 <Link
                                     href={`/shop/${item.productCategory}/${formattedsubCategory}`}
                                     className="w-[240px] h-[200px] flex justify-center items-center overflow-hidden relative">

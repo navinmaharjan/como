@@ -26,7 +26,7 @@ const Featured = async () => {
                         const formattedProductName = item.productName.replace(/ /g, '-');
                         const formattedsubCategory = item.productSubcategory.replace(/ /g, '-');
                         return (
-                            <div key={item.id} className='cursor-pointer border'>
+                            <div key={item._id} className='cursor-pointer border'>
                                 <Link href={`/shop/${item.productCategory}/${formattedsubCategory}/${formattedProductName}`}>
                                     <div className='w-[235px] h-48 flex justify-center items-center overflow-hidden relative'>
                                         <Image

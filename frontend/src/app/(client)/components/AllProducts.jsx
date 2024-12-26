@@ -101,11 +101,11 @@ const AllProducts = () => {
             <Spinner size="sm" />
           </div>
         ) : (
-          productList.map((item, index) => {
+          productList.map((item) => {
             const formattedProductName = item.productName.replace(/ /g, '-');
             const formattedsubCategory = item.productSubcategory.replace(/ /g, '-');
             return (
-              <div key={index} className='cursor-pointer border'>
+              <div key={item._id} className='cursor-pointer border'>
                 <Link  href={`/shop/${item.productCategory}/${formattedsubCategory}/${formattedProductName}`}>
                   <div  className='w-[185px] h-[150px] flex justify-center items-center overflow-hidden relative'>
                     <Image
