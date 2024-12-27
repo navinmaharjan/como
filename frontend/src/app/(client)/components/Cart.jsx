@@ -51,7 +51,7 @@ const Cart = ({ toggleMenu }) => {
                   <div className="flex flex-col">
                     <p className="text-sm font-medium">{item.productName}</p>
                     <span className="text-sm w-6 text-center">{item.quantity} <span className="text-sm">X</span></span>
-                    <p className="font-medium text-blue-500">${(item.productSellPrice * item.quantity).toFixed(2)}</p>
+                    <p className="font-medium text-blue-500">${item.productSellPrice}</p>
                     {/* <div className="flex items-center space-x-2 mt-2">
                       <button
                         className="bg-gray-100 w-6 h-6 flex justify-center items-center rounded hover:bg-gray-200"
