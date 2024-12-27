@@ -9,7 +9,7 @@ const ClientLayout = ({ children }) => {
         <Header />
       </div>
       {children}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   )
 }
