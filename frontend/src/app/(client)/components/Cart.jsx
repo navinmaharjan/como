@@ -4,6 +4,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, updateCartItemQuantity } from "@/lib/redux/slices/cartSlice";
 import { IoTrashBin } from "react-icons/io5";
+import Link from "next/link";
 
 const Cart = ({ toggleMenu }) => {
   const { cartList } = useSelector((state) => state.cart);
@@ -17,9 +18,6 @@ const Cart = ({ toggleMenu }) => {
   const handleRemoveItem = (itemId) => {
     dispatch(removeFromCart({ _id: itemId }));
   };
-
-  console.log(cartList)
-
   return (
     <div className="flex flex-col h-full">
       <div className="w-full text-center bg-primaryColor flex items-center justify-between p-4">
@@ -41,8 +39,8 @@ const Cart = ({ toggleMenu }) => {
                 <div className="flex items-center space-x-4">
                   <p className="text-sm text-gray-500">{index + 1}.</p>
                   <div className="w-16 h-16 relative">
-                    <Image 
-                      src={item.productImage} 
+                    <Image
+                      src={item.productImage}
                       alt={item.productName}
                       layout="fill"
                       objectFit="contain"
@@ -94,9 +92,16 @@ const Cart = ({ toggleMenu }) => {
               ${cartList.reduce((total, item) => total + item.productSellPrice * item.quantity, 0).toFixed(2)}
             </span>
           </div>
-          <button className="w-full bg-primaryColor text-white py-2 rounded hover:bg-opacity-90 transition-colors">
-            Proceed to Checkout
-          </button>
+          <div className="flex gap-4">
+            <Link href='/user/cart' onClick={() => toggleMenu('cart')} className=" text-center w-full bg-primaryColor text-white py-2 rounded hover:bg-opacity-90 transition-colors">
+              View Cart
+            </Link>
+            <Link href='#' onClick={() => toggleMenu('cart')} className="text-center w-full bg-primaryColor text-white py-2 rounded hover:bg-opacity-90 transition-colors">
+              Checkout
+            </Link>
+
+          </div>
+
         </div>
       )}
     </div>
