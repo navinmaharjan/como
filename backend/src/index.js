@@ -7,7 +7,7 @@ const app = express();
 
 require('dotenv').config()
 
-app.use(cors())
+app.use(cors({credentials: true}))
 app.use(express.json())
 app.use(userRoutes)
 app.use(adminRoutes)

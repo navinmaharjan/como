@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import { useRouter } from 'next/navigation'
 import { Input, Button } from "@nextui-org/react"
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi"
+import { loginAdmin } from "@/lib/auth";
 
 // Validation schema
 const LoginSchema = Yup.object().shape({
@@ -20,19 +21,20 @@ const AdminLogin = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const togglePasswordVisibility = () => setIsPasswordVisible(!isPasswordVisible)
 
-  const handleLogin = async (values) => {
-    try {
-      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}` + '/admin/login', values);
-      console.log(data)
-      if (data) {
-        toast.success(data.msg);
-        router.push("/admin/dashboard")
-      }
-    } catch (error) {
-      const errorMessage = error?.response?.data?.msg || "An unexpected error occurred.";
-      toast.error(errorMessage);
-      console.error("Error posting data:", error);
+  const handleLogin = async (values, { setSubmitting }) => {
+    const formData = new FormData()
+    formData.append('email', values.email)
+    formData.append('password', values.password)
+
+    const result = await loginAdmin(formData)
+    if (result.success) {
+      toast.success(result.message)
+      router.push('/admin/test')
+    } else {
+      toast.error(result.message)
     }
+
+    setSubmitting(false)
   }
 
   return (

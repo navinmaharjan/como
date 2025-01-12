@@ -19,7 +19,7 @@ const Featured = async () => {
                 <div className=' w-full py-8 grid grid-cols-5 justify-between items-center gap-4'>
                     {featuredProduct.map((item) => {
                         return (
-                           <ProductCard item = {item} />
+                           <ProductCard key={item._id} item = {item} />
                         )
                     })}
                 </div>

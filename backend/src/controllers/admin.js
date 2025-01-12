@@ -1,4 +1,4 @@
-const Admin = require('../models/admin')
+const jwt = require("jsonwebtoken");
 
 const adminLogin = async (req, res) => {
    const adminEmail = process.env.ADMIN_EMAIL;
@@ -14,7 +14,12 @@ const adminLogin = async (req, res) => {
          return res.status(401).json({ msg: "Wrong password" });
       }
 
-      return res.status(200).json({isLoggedIn: true,  msg: "Admin login successful" });
+      const adminToken = jwt.sign ({
+         email, 
+         password
+      }, process.env.SECRET_KEY, {expiresIn: '30m'})
+
+      return res.status(200).json({adminToken, isLoggedIn: true,  msg: "Admin login successful" });
 
    } catch (error) {
       console.error(error);

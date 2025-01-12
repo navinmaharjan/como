@@ -19,7 +19,7 @@ const BestSelling = async () => {
         <div className=' w-full grid grid-cols-5 justify-between items-center gap-4 pt-4'>
           {bestSellingProducts.map((item) => {
             return (
-             <ProductCard item={item} />
+             <ProductCard key={item._id} item={item} />
             )
           })}
         </div>

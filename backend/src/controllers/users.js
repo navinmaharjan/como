@@ -36,7 +36,12 @@ const loginUser = async (req, res) => {
         if (!isPasswordMatched) {
             return res.status(401).json({ msg: "Invalid password!" });
         }
-        const token = jwt.sign({ email: user.email }, process.env.SECRET_KEY, { expiresIn: '1h' }); // Added expiration time for better security
+        const token = jwt.sign({
+            userId: user._id,
+            fullName: user.fullName,
+            mobile: user.mobile,
+            email: user.email,
+        }, process.env.SECRET_KEY, { expiresIn: '1h' }); // Added expiration time for better security
         res.json({
             token,
             user,
